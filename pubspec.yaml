@@ -75,6 +75,8 @@ flutter:
     - assets/home.png
     - assets/bookmark.png
     - assets/bookmark.svg
+    - assets/login_img.png
+    - assets/user.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
