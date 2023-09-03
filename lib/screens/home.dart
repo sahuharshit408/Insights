@@ -1,80 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:insights/widgets/home_card.dart';
 
-class Home extends StatefulWidget {
-  const Home({super.key});
+class Home extends StatelessWidget {
+  const Home({
+    super.key,
+  });
 
-  @override
-  State<Home> createState() {
-    return _HomeState();
-  }
-}
-
-class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.display_settings_sharp),
-        ),
-        title: const Text('Insights'),
-        elevation: 0,
-        backgroundColor: const Color.fromRGBO(72, 105, 98, 1),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.search),
-          ),
-        ],
+    return ListView.builder(
+      itemBuilder: (context, index) => const Padding(
+        padding: EdgeInsets.symmetric(vertical :8.0),
+        child: HomeCard(),
       ),
-      body: ListView.builder(
-        itemBuilder: (context, index) => const HomeCard(),
-        itemCount: 10,
-        padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: const Color.fromRGBO(72, 105, 98, 1),
-        items: [
-          BottomNavigationBarItem(
-            icon: IconButton(
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Home(),),);
-              },
-              icon: const Icon(Icons.home),
-            ),
-            label: "",
-          ),
-          BottomNavigationBarItem(
-            icon: IconButton(
-              onPressed: () {
-                // Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Home(),),);
-              },
-              icon: const Icon(Icons.bookmark),
-            ),
-            label: "",
-          ),
-          BottomNavigationBarItem(
-            icon: IconButton(
-              onPressed: () {
-                // Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Home(),),);
-              },
-              icon: const Icon(Icons.notifications),
-            ),
-            label: "",
-          ),
-          BottomNavigationBarItem(
-            icon: IconButton(
-              onPressed: () {
-                // Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Home(),),);
-              },
-              icon: const Icon(Icons.person),
-            ),
-            label: "",
-          ),
-        ],
-      ),
+      itemCount: 10,
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
     );
   }
 }
