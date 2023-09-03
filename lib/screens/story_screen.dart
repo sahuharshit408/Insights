@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:insights/screens/home.dart';
+import 'package:insights/screens/bottom_nav.dart';
 import 'package:insights/widgets/story_card.dart';
 
 class StoryScreen extends StatefulWidget {
