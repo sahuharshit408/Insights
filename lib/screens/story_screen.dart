@@ -16,64 +16,18 @@ class _StoryCardState extends State<StoryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.display_settings_sharp),
+        title: const Text(
+          'GOVSNAP',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 20,
+            fontWeight: FontWeight.w900,
+            fontFamily: 'Poppins',
+          ),
+          textAlign: TextAlign.justify,
         ),
-        title: const Text('Insights'),
         elevation: 0,
         backgroundColor: const Color.fromRGBO(72, 105, 98, 1),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.search),
-          ),
-        ],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: const Color.fromRGBO(72, 105, 98, 1),
-        items: [
-          BottomNavigationBarItem(
-            icon: IconButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const Home(),
-                  ),
-                );
-              },
-              icon: const Icon(Icons.home),
-            ),
-            label: "",
-          ),
-          BottomNavigationBarItem(
-            icon: IconButton(
-              onPressed: () {
-                // Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Home(),),);
-              },
-              icon: const Icon(Icons.bookmark),
-            ),
-            label: "",
-          ),
-          BottomNavigationBarItem(
-            icon: IconButton(
-              onPressed: () {
-                // Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Home(),),);
-              },
-              icon: const Icon(Icons.notifications),
-            ),
-            label: "",
-          ),
-          BottomNavigationBarItem(
-            icon: IconButton(
-              onPressed: () {
-                // Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Home(),),);
-              },
-              icon: const Icon(Icons.person),
-            ),
-            label: "",
-          ),
-        ],
       ),
       body: const Padding(
         padding: EdgeInsets.symmetric(horizontal: 28, vertical: 14),
