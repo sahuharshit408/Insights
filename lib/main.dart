@@ -11,9 +11,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-        home: LoginPage()
-        // BottomNav() add to sign up button on press
+    return MaterialApp(
+      home: const LoginPage()
+      // BottomNav() add to sign up button on press
+      ,
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        fontFamily: "Raleway",
+        useMaterial3: true,
+      ),
+      debugShowCheckedModeBanner: false,
     );
   }
 }

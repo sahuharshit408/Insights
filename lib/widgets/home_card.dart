@@ -1,72 +1,110 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+
 import 'package:insights/screens/story_screen.dart';
 
+import '../models/press_releases_model.dart';
+
 class HomeCard extends StatelessWidget {
-  const HomeCard({super.key});
+  final String ministryName;
+  final PressReleases pr;
+  const HomeCard({
+    Key? key,
+    required this.ministryName,
+    required this.pr,
+  }) : super(key: key);
 
   @override
   Widget build(context) {
+    final size = MediaQuery.of(context).size;
     return SizedBox(
-      height: 342,
-      width: 342,
-      child: InkWell(
-        onTap: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => const StoryScreen(),
-            ),
-          );
-        },
-        child: Card(
-          elevation: 15,
-          clipBehavior: Clip.antiAliasWithSaveLayer,
-          shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(18))),
-          child: Container(
-            decoration: BoxDecoration(
+      height: size.width * 0.9,
+      width: size.width * 0.9,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => StoryScreen(
+                  pr: pr,
+                  ministryName: ministryName,
+                ),
+              ),
+            );
+          },
+          child: Card(
+            elevation: 8,
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(18))),
+            child: Container(
+              decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: Image.network('https://picsum.photos/250?image=9')
-                        .image,
-                    fit: BoxFit.cover),),
-            child: const Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal : 16.0),
-                  child: Row(
+                    image: Image.network(pr.imageUrls![0]).image,
+                    fit: BoxFit.cover),
+              ),
+              child: DecoratedBox(
+                position: DecorationPosition.background,
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.center,
+                    colors: [
+                      Colors.black,
+                      Colors.transparent,
+                    ],
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Head Line',
+                        pr.title!,
+                        maxLines: 1,
                         softWrap: true,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontFamily: "Inter",
+                          fontVariations: [
+                            FontVariation(
+                              'wght',
+                              700,
+                            ),
+                          ],
                           color: Colors.white,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 4,
+                      ),
+                      Text(
+                        pr.descriptiveText!.join(" "),
+                        maxLines: 3,
+                        softWrap: true,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                          fontFamily: "Inter",
+                          fontVariations: [
+                            FontVariation(
+                              'wght',
+                              500,
+                            ),
+                          ],
                         ),
                       ),
                     ],
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        Text(
-                          'News Short Description afjh;oif ',
-                          maxLines: 3,
-                          softWrap: true,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(color: Colors.white, fontSize: 18),
-                        ),
-                      ],
-                    ),
-                  ),
-                )
-              ],
+              ),
             ),
           ),
         ),

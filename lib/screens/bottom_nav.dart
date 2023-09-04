@@ -13,8 +13,7 @@ class BottomNav extends StatefulWidget {
 }
 
 class _BottomNavState extends State<BottomNav> {
-
-    int selectedIndex = 0;
+  int selectedIndex = 0;
 
   final List<Widget> _widgetOptions = <Widget>[
     const Home(),
@@ -25,45 +24,53 @@ class _BottomNavState extends State<BottomNav> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromRGBO(188, 203, 206, 1),
       appBar: AppBar(
         centerTitle: true,
         elevation: 0,
-         actions: [
+        actions: [
           Expanded(
-            child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,children: [ IconButton(
-                onPressed: () {},
-                icon: SvgPicture.asset("assets/filter_icon.svg"),
-              ),
-             
-              const Text(
-                'GOVSNAP',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w900,
-                  fontFamily: 'Poppins',
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                  onPressed: () {},
+                  icon: SvgPicture.asset(
+                    "assets/filter_icon.svg",
+                    width: 28,
+                    height: 28,
+                  ),
                 ),
-                textAlign: TextAlign.justify,
-              ),
-             
-              IconButton(
-                onPressed: () {},
-                icon: Image.asset("assets/material-symbols_search.png"),
-              ),],),
+                const Text(
+                  'Insights',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w900,
+                    fontFamily: 'Poppins',
+                  ),
+                  textAlign: TextAlign.justify,
+                ),
+                IconButton(
+                  onPressed: () {},
+                  icon: Image.asset(
+                    "assets/material-symbols_search.png",
+                    height: 28,
+                    width: 28,
+                  ),
+                ),
+              ],
+            ),
           ),
-           
-          ],
-   
+        ],
         backgroundColor: const Color.fromRGBO(72, 105, 98, 1),
       ),
       body: Center(
         child: _widgetOptions.elementAt(selectedIndex),
       ),
       bottomNavigationBar: Theme(
-        data: Theme.of(context).copyWith(
-          canvasColor: const Color.fromRGBO(72, 105, 98, 1)
-        ),
-
+        data: Theme.of(context)
+            .copyWith(canvasColor: const Color.fromRGBO(72, 105, 98, 1)),
         child: BottomNavigationBar(
           backgroundColor: const Color.fromRGBO(72, 105, 98, 1),
           type: BottomNavigationBarType.fixed,
@@ -75,24 +82,24 @@ class _BottomNavState extends State<BottomNav> {
           },
           items: [
             BottomNavigationBarItem(
-              
-              icon: SvgPicture.asset('assets/home.svg',),
+              icon: SvgPicture.asset(
+                'assets/home.svg',
+              ),
               label: "",
             ),
             BottomNavigationBarItem(
               icon: SvgPicture.asset('assets/bookmark.svg'),
               label: "",
-              
-
             ),
             BottomNavigationBarItem(
-              icon:SvgPicture.asset('assets/notify.svg'),
-       
+              icon: SvgPicture.asset('assets/notify.svg'),
               label: "",
             ),
             BottomNavigationBarItem(
               icon: SvgPicture.asset('assets/person.svg'),
-              activeIcon: SvgPicture.asset('assets/person.svg',),
+              activeIcon: SvgPicture.asset(
+                'assets/person.svg',
+              ),
               label: "",
             ),
           ],
@@ -101,5 +108,3 @@ class _BottomNavState extends State<BottomNav> {
     );
   }
 }
-
-
