@@ -1,5 +1,8 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:insights/constants.dart';
 import 'package:insights/screens/home.dart';
 import 'package:insights/screens/profile.dart';
 
@@ -17,8 +20,24 @@ class _BottomNavState extends State<BottomNav> {
 
   final List<Widget> _widgetOptions = <Widget>[
     const Home(),
-    const Home(),
-    const Home(),
+    const Center(
+      child: Text(
+        'Bookmarks',
+        style: TextStyle(
+          fontSize: 20,
+          fontVariations: [FontVariation("wght", 700)],
+        ),
+      ),
+    ),
+    const Center(
+      child: Text(
+        'Notifications',
+        style: TextStyle(
+          fontSize: 20,
+          fontVariations: [FontVariation("wght", 700)],
+        ),
+      ),
+    ),
     const Profile(),
   ];
   @override
@@ -27,6 +46,7 @@ class _BottomNavState extends State<BottomNav> {
       body: Center(
         child: _widgetOptions.elementAt(selectedIndex),
       ),
+      backgroundColor: backgroundColor,
       bottomNavigationBar: Theme(
         data: Theme.of(context)
             .copyWith(canvasColor: const Color.fromRGBO(72, 105, 98, 1)),
