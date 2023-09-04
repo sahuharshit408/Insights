@@ -1,8 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:insights/models/press_releases_model.dart';
-import 'package:insights/service.dart';
 import 'package:insights/widgets/home_card.dart';
 import 'package:insights/utils/loader.dart';
 
