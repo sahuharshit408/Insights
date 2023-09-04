@@ -73,8 +73,14 @@ flutter:
     - assets/home.svg
     - assets/notify.svg
     - assets/home.png
-    - assets/bookmark.png
     - assets/bookmark.svg
+    - assets/heart.svg
+    - assets/u_moon.svg
+    - assets/wifi.svg
+    - assets/download.svg
+    - assets/Group 64.svg
+    - assets/Translate.svg
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
