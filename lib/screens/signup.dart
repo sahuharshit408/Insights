@@ -1,28 +1,25 @@
 import 'dart:ui';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:insights/auth.dart';
+import 'package:insights/components/custom_button.dart';
+import 'package:insights/components/custom_text_field_widget.dart';
 import 'package:insights/constants.dart';
-import 'package:insights/screens/bottom_nav.dart';
-import 'package:insights/screens/signup.dart';
-import '../components/custom_button.dart';
-import '../components/custom_text_field_widget.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:insights/screens/Login.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class SignUp extends StatefulWidget {
+  const SignUp({Key? key}) : super(key: key);
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<SignUp> createState() => _SignUpState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignUpState extends State<SignUp> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  late TapGestureRecognizer _gestureRecognizer;
 
-  TapGestureRecognizer? _gestureRecognizer;
   @override
   void dispose() {
     emailController.dispose();
@@ -34,30 +31,13 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     _gestureRecognizer = TapGestureRecognizer()
       ..onTap = () {
-        Navigator.of(context).push(
+        Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (context) => const SignUp(),
+            builder: (context) => const LoginPage(),
           ),
         );
       };
     super.initState();
-  }
-
-  void isLogin(BuildContext context) {
-    final auth = FirebaseAuth.instance;
-    final user = auth.currentUser;
-
-    setState(
-      () {
-        if (user != null) {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (context) => const BottomNav(),
-            ),
-          );
-        }
-      },
-    );
   }
 
   @override
@@ -107,7 +87,7 @@ class _LoginPageState extends State<LoginPage> {
                   height: size.height * 0.028,
                 ),
                 const Text(
-                  "Please Log into your account",
+                  "Please Signup with your account",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontVariations: [
@@ -140,13 +120,13 @@ class _LoginPageState extends State<LoginPage> {
                   height: size.height * 0.044,
                 ),
                 CustomButton(
-                  text: "Login",
+                  text: "Signup",
                   onPressed: () async {
-                    Auth().signInWithEmailAndPassword(
+                    Auth().registerWithEmailAndPassword(
                         emailController.text, passwordController.text);
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
-                        builder: (context) => const BottomNav(),
+                        builder: (context) => const LoginPage()
                       ),
                     );
                   },
@@ -156,7 +136,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 RichText(
                   text: TextSpan(
-                    text: 'Don\'t have an account? ',
+                    text: 'Already Registered Go Back to ',
                     style: const TextStyle(
                       fontVariations: [
                         FontVariation(
@@ -169,26 +149,12 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     children: <TextSpan>[
                       TextSpan(
-                        text: ' Signup',
+                        text: ' Login',
                         recognizer: _gestureRecognizer,
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
-                ),
-                const SizedBox(
-                  height: 40,
-                ),
-                IconButton(
-                  onPressed: () async {
-                    signInWithGoogle();
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (context) => const BottomNav(),
-                      ),
-                    );
-                  },
-                  icon: SvgPicture.asset('assets/icons8-google.svg',width: 30,height: 30,),
                 ),
               ],
             ),
@@ -196,18 +162,5 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
-  }
-
-  signInWithGoogle() async {
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-    final GoogleSignInAuthentication? googleAuth =
-        await googleUser?.authentication;
-    AuthCredential credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
-    );
-    UserCredential user =
-        await FirebaseAuth.instance.signInWithCredential(credential);
-    print(user.user?.displayName);
   }
 }

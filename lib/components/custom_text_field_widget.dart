@@ -9,16 +9,20 @@ class CustomTextFieldWidget extends StatelessWidget {
   final TextInputType keyboardType;
   final String hintText;
   final Widget? prefixIcon;
+  final TextEditingController? controller;
+  
   const CustomTextFieldWidget({
     Key? key,
     this.keyboardType = TextInputType.text,
     this.hintText = "",
     this.prefixIcon,
+    this.controller,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: controller,
       keyboardType: keyboardType,
       style: const TextStyle(
         fontVariations: [
