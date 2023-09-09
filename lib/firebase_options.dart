@@ -50,20 +50,20 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAWnNPE_Fjn950JCHcEvguCzSyZZyAfGPw',
-    appId: '1:674465103099:android:393a7be611558b2cf3045e',
-    messagingSenderId: '674465103099',
-    projectId: 'insights-4395d',
-    storageBucket: 'insights-4395d.appspot.com',
+    apiKey: 'AIzaSyAaJcGDhXwrT6dcpEbc9Klfor-E7CZd6iA',
+    appId: '1:786768331453:android:e3d8f7ac6c124cbf9cedd4',
+    messagingSenderId: '786768331453',
+    projectId: 'synth-ai-envoys',
+    storageBucket: 'synth-ai-envoys.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAB80wURjIJEgKbGSY5lVVRLXVtXlcnz9Q',
-    appId: '1:674465103099:ios:f1f2476f45e83ea9f3045e',
-    messagingSenderId: '674465103099',
-    projectId: 'insights-4395d',
-    storageBucket: 'insights-4395d.appspot.com',
-    iosClientId: '674465103099-fieg568ted3jt9ra60cqvbes7608jf03.apps.googleusercontent.com',
+    apiKey: 'AIzaSyBJFsJCwop4lF8FXinom9OENzWtqyf1zJ8',
+    appId: '1:786768331453:ios:3a05a228d670b7c09cedd4',
+    messagingSenderId: '786768331453',
+    projectId: 'synth-ai-envoys',
+    storageBucket: 'synth-ai-envoys.appspot.com',
+    iosClientId: '786768331453-hb33i0p00mh64dcvmapvmf95cc73q0gj.apps.googleusercontent.com',
     iosBundleId: 'com.example.insights',
   );
 }

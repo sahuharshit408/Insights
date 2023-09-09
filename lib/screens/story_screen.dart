@@ -9,12 +9,12 @@ import 'package:insights/screens/full_screen_image.dart';
 import '../models/press_releases_model.dart';
 
 class StoryScreen extends StatefulWidget {
-  final String ministryName;
-  final PressReleases pr;
+  // final String ministryName;
+  // final PressReleases pr;
   const StoryScreen({
     Key? key,
-    required this.ministryName,
-    required this.pr,
+    // required this.ministryName,
+    // required this.pr,
   }) : super(key: key);
 
   @override

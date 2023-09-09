@@ -52,7 +52,7 @@ class _HomeState extends State<Home> {
                   ),
                 ),
                 const Text(
-                  'GOVSNAP',
+                  'INSIGHTS',
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 20,
@@ -106,22 +106,23 @@ class _HomeState extends State<Home> {
                             return ListView.builder(
                               physics: const NeverScrollableScrollPhysics(),
                               itemBuilder: (context, innerIndex) {
-                                var currMinistryPressReleases = currPressRelease
-                                    .allPressReleases![innerIndex];
+                                // var currMinistryPressReleases = currPressRelease
+                                //     .allPressReleases![innerIndex];
                                 return ListView.builder(
                                   physics: const NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
                                   itemBuilder: (context, i) {
-                                    var pressRelease = currMinistryPressReleases
-                                        .pressReleases![i];
-                                    return Hero(
-                                      tag: pressRelease.prId!,
-                                      child: HomeCard(
-                                        pr: pressRelease,
-                                        ministryName:
-                                            currMinistryPressReleases.ministry!,
-                                      ),
-                                    );
+                                    // var pressRelease = currMinistryPressReleases
+                                    //     .pressReleases![i];
+                                    // return Hero(
+                                    //   tag: pressRelease.prId!,
+                                    //   child: HomeCard(
+                                    //     pr: pressRelease,
+                                    //     ministryName:
+                                    //         currMinistryPressReleases.ministry!,
+                                      // ),
+                                    // );
+                                    return HomeCard();
                                   },
                                   itemCount: currMinistryPressReleases
                                       .pressReleases!.length,

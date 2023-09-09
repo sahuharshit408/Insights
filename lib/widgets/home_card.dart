@@ -2,18 +2,19 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 import 'package:insights/screens/story_screen.dart';
 
 import '../models/press_releases_model.dart';
 
 class HomeCard extends StatelessWidget {
-  final String ministryName;
-  final PressReleases pr;
+  // final String ministryName;
+  // final PressReleases pr;
   const HomeCard({
     Key? key,
-    required this.ministryName,
-    required this.pr,
+    // required this.ministryName,
+    // required this.pr,
   }) : super(key: key);
 
   @override
@@ -29,8 +30,8 @@ class HomeCard extends StatelessWidget {
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) => StoryScreen(
-                  pr: pr,
-                  ministryName: ministryName,
+                  // pr: pr,
+                  // ministryName: ministryName,
                 ),
               ),
             );
@@ -39,7 +40,10 @@ class HomeCard extends StatelessWidget {
             elevation: 8,
             clipBehavior: Clip.antiAliasWithSaveLayer,
             shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(18))),
+              borderRadius: BorderRadius.all(
+                Radius.circular(18),
+              ),
+            ),
             child: Container(
               decoration: BoxDecoration(
                 image: DecorationImage(
@@ -60,45 +64,59 @@ class HomeCard extends StatelessWidget {
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  child: Stack(
                     children: [
-                      Text(
-                        pr.title!,
-                        maxLines: 1,
-                        softWrap: true,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontFamily: "Inter",
-                          fontVariations: [
-                            FontVariation(
-                              'wght',
-                              700,
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            pr.title!,
+                            maxLines: 1,
+                            softWrap: true,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontFamily: "Inter",
+                              fontVariations: [
+                                FontVariation(
+                                  'wght',
+                                  700,
+                                ),
+                              ],
+                              color: Colors.white,
                             ),
-                          ],
-                          color: Colors.white,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 4,
-                      ),
-                      Text(
-                        pr.descriptiveText!.join(" "),
-                        maxLines: 3,
-                        softWrap: true,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 12,
-                          fontFamily: "Inter",
-                          fontVariations: [
-                            FontVariation(
-                              'wght',
-                              500,
+                          ),
+                          const SizedBox(
+                            height: 4,
+                          ),
+                          Text(
+                            pr.descriptiveText!.join(" "),
+                            maxLines: 3,
+                            softWrap: true,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontFamily: "Inter",
+                              fontVariations: [
+                                FontVariation(
+                                  'wght',
+                                  500,
+                                ),
+                              ],
                             ),
-                          ],
+                          ),
+                        ],
+                      ),
+                      Positioned(
+                        top: 8, // Adjust the position as needed
+                        right: 8, // Adjust the position as needed
+                        child: IconButton(
+                          icon: SvgPicture.asset('assets/bookmark.svg'),
+                          onPressed: () {
+                            // Handle bookmark button press
+                          },
                         ),
                       ),
                     ],

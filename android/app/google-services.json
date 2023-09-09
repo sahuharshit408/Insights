@@ -1,34 +1,41 @@
 {
   "project_info": {
-    "project_number": "674465103099",
-    "project_id": "insights-4395d",
-    "storage_bucket": "insights-4395d.appspot.com"
+    "project_number": "786768331453",
+    "project_id": "synth-ai-envoys",
+    "storage_bucket": "synth-ai-envoys.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:674465103099:android:393a7be611558b2cf3045e",
+        "mobilesdk_app_id": "1:786768331453:android:e3d8f7ac6c124cbf9cedd4",
         "android_client_info": {
           "package_name": "com.example.insights"
         }
       },
       "oauth_client": [
         {
-          "client_id": "674465103099-0vv5cakhgfdnn631ia16af6cau6b1pms.apps.googleusercontent.com",
+          "client_id": "786768331453-ftahtoainhub4d437edecgc2a9j2ohfm.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAWnNPE_Fjn950JCHcEvguCzSyZZyAfGPw"
+          "current_key": "AIzaSyAaJcGDhXwrT6dcpEbc9Klfor-E7CZd6iA"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "674465103099-0vv5cakhgfdnn631ia16af6cau6b1pms.apps.googleusercontent.com",
+              "client_id": "786768331453-ftahtoainhub4d437edecgc2a9j2ohfm.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "786768331453-hb33i0p00mh64dcvmapvmf95cc73q0gj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.insights"
+              }
             }
           ]
         }

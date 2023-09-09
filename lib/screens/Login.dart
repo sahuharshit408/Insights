@@ -9,7 +9,6 @@ import 'package:insights/screens/bottom_nav.dart';
 import 'package:insights/screens/signup.dart';
 import '../components/custom_button.dart';
 import '../components/custom_text_field_widget.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -181,7 +180,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 IconButton(
                   onPressed: () async {
-                    signInWithGoogle();
+                    Auth().signInWithGoogle();
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
                         builder: (context) => const BottomNav(),
@@ -198,16 +197,5 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  signInWithGoogle() async {
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-    final GoogleSignInAuthentication? googleAuth =
-        await googleUser?.authentication;
-    AuthCredential credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
-    );
-    UserCredential user =
-        await FirebaseAuth.instance.signInWithCredential(credential);
-    print(user.user?.displayName);
-  }
+  
 }
