@@ -9,12 +9,12 @@ import 'package:insights/screens/story_screen.dart';
 import '../models/press_releases_model.dart';
 
 class HomeCard extends StatelessWidget {
-  // final String ministryName;
-  // final PressReleases pr;
+  final String ministryName;
+  final PressReleases pr;
   const HomeCard({
     Key? key,
-    // required this.ministryName,
-    // required this.pr,
+    required this.ministryName,
+    required this.pr,
   }) : super(key: key);
 
   @override
@@ -30,8 +30,8 @@ class HomeCard extends StatelessWidget {
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) => StoryScreen(
-                  // pr: pr,
-                  // ministryName: ministryName,
+                  pr: pr,
+                  ministryName: ministryName,
                 ),
               ),
             );

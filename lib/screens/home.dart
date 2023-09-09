@@ -106,23 +106,22 @@ class _HomeState extends State<Home> {
                             return ListView.builder(
                               physics: const NeverScrollableScrollPhysics(),
                               itemBuilder: (context, innerIndex) {
-                                // var currMinistryPressReleases = currPressRelease
-                                //     .allPressReleases![innerIndex];
+                                var currMinistryPressReleases = currPressRelease
+                                    .allPressReleases![innerIndex];
                                 return ListView.builder(
                                   physics: const NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
                                   itemBuilder: (context, i) {
-                                    // var pressRelease = currMinistryPressReleases
-                                    //     .pressReleases![i];
-                                    // return Hero(
-                                    //   tag: pressRelease.prId!,
-                                    //   child: HomeCard(
-                                    //     pr: pressRelease,
-                                    //     ministryName:
-                                    //         currMinistryPressReleases.ministry!,
-                                      // ),
-                                    // );
-                                    return HomeCard();
+                                    var pressRelease = currMinistryPressReleases
+                                        .pressReleases![i];
+                                    return Hero(
+                                      tag: pressRelease.prId!,
+                                      child: HomeCard(
+                                        pr: pressRelease,
+                                        ministryName:
+                                            currMinistryPressReleases.ministry!,
+                                      ),
+                                    );
                                   },
                                   itemCount: currMinistryPressReleases
                                       .pressReleases!.length,
