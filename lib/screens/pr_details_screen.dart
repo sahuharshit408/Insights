@@ -1,29 +1,26 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:ui';
 
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 import 'package:insights/screens/full_screen_image.dart';
 
 import '../models/press_releases_model.dart';
 
-class StoryScreen extends StatefulWidget {
-  final String ministryName;
-  final PressReleases pr;
-  const StoryScreen({
+class PrDetailsScreen extends StatefulWidget {
+  final PressRelease pr;
+  const PrDetailsScreen({
     Key? key,
-    required this.ministryName,
     required this.pr,
   }) : super(key: key);
 
   @override
-  State<StoryScreen> createState() {
-    return _StoryCardState();
+  State<PrDetailsScreen> createState() {
+    return _PrDetailState();
   }
 }
 
-class _StoryCardState extends State<StoryScreen> {
+class _PrDetailState extends State<PrDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -32,12 +29,12 @@ class _StoryCardState extends State<StoryScreen> {
       appBar: AppBar(
         centerTitle: true,
         title: const Text(
-          'Insights',
+          'INSIGHTS',
           style: TextStyle(
             color: Colors.black,
             fontSize: 20,
             fontWeight: FontWeight.w900,
-            fontFamily: 'Inter',
+            fontFamily: 'Poppins',
           ),
           textAlign: TextAlign.justify,
         ),
@@ -50,14 +47,14 @@ class _StoryCardState extends State<StoryScreen> {
             delegate: SliverChildListDelegate(
               [
                 Hero(
-                  tag: widget.pr.prId!,
+                  tag: widget.pr.prId,
                   child: GestureDetector(
                     onTap: () {
                       Navigator.of(context).push(PageRouteBuilder(
                         opaque: false,
                         pageBuilder: (context, animation, secondaryAnimation) =>
                             FullScreenImage(
-                          imageUrl: widget.pr.imageUrls![0],
+                          imageUrl: widget.pr.thumbnail,
                           pr: widget.pr,
                         ),
                       ));
@@ -69,7 +66,7 @@ class _StoryCardState extends State<StoryScreen> {
                         decoration: BoxDecoration(
                           image: DecorationImage(
                             image: Image.network(
-                              widget.pr.imageUrls![0],
+                              widget.pr.thumbnail,
                             ).image,
                             fit: BoxFit.cover,
                           ),
@@ -82,7 +79,7 @@ class _StoryCardState extends State<StoryScreen> {
                   padding: const EdgeInsets.only(
                       left: 20, right: 20, top: 20, bottom: 10),
                   child: Text(
-                    widget.pr.title!,
+                    widget.pr.title,
                     style: const TextStyle(
                       fontSize: 22,
                       fontFamily: "Inter",
@@ -99,7 +96,7 @@ class _StoryCardState extends State<StoryScreen> {
                   padding:
                       const EdgeInsets.only(left: 20, right: 20, bottom: 20),
                   child: Text(
-                    widget.pr.descriptiveText!.join("\n\n"),
+                    widget.pr.description.join("\n\n"),
                     style: const TextStyle(
                       fontSize: 18,
                       fontFamily: "Inter",

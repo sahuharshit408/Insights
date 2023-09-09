@@ -1,6 +1,7 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:insights/utils/preference_utlis.dart';
 
 import 'api_config_utils.dart';
 import 'res_base_model.dart';
@@ -12,6 +13,7 @@ class ApiService {
   static final Dio mDio = Dio();
   static final ApiService _instance = ApiService._internal();
   factory ApiService() {
+    mDio.options.headers['Authorization'] = "Bearer ${getString("token")}";
     mDio.options.contentType = 'application/json';
     return _instance;
   }
@@ -30,6 +32,7 @@ class ApiService {
         receiveTimeout: const Duration(seconds: 60),
         headers: {
           'Connection': 'Keep-Alive',
+          'Authorization': "Bearer ${getString("token")}"
         });
     mDio.options = baseOption;
     mDio.options.queryParameters.toString();

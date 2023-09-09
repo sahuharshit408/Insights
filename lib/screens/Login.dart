@@ -9,7 +9,9 @@ import 'package:insights/screens/bottom_nav.dart';
 import 'package:insights/screens/signup.dart';
 import '../components/custom_button.dart';
 import '../components/custom_text_field_widget.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+
+final TextEditingController emailController = TextEditingController();
+final TextEditingController passwordController = TextEditingController();
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -19,9 +21,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-
   TapGestureRecognizer? _gestureRecognizer;
   @override
   void dispose() {
@@ -143,11 +142,9 @@ class _LoginPageState extends State<LoginPage> {
                   text: "Login",
                   onPressed: () async {
                     Auth().signInWithEmailAndPassword(
-                        emailController.text, passwordController.text);
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (context) => const BottomNav(),
-                      ),
+                      context: context,
+                      email: emailController.text,
+                      password: passwordController.text,
                     );
                   },
                 ),
@@ -181,14 +178,13 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 IconButton(
                   onPressed: () async {
-                    signInWithGoogle();
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (context) => const BottomNav(),
-                      ),
-                    );
+                    await Auth().signInWithGoogle(context: context);
                   },
-                  icon: SvgPicture.asset('assets/icons8-google.svg',width: 30,height: 30,),
+                  icon: SvgPicture.asset(
+                    'assets/icons8-google.svg',
+                    width: 30,
+                    height: 30,
+                  ),
                 ),
               ],
             ),
@@ -196,18 +192,5 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
-  }
-
-  signInWithGoogle() async {
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-    final GoogleSignInAuthentication? googleAuth =
-        await googleUser?.authentication;
-    AuthCredential credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
-    );
-    UserCredential user =
-        await FirebaseAuth.instance.signInWithCredential(credential);
-    print(user.user?.displayName);
   }
 }

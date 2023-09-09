@@ -17,7 +17,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  List<PressReleasesModel>? pressReleasesModel;
+  List<PressRelease>? pressReleasesModel;
 
   @override
   void initState() {
@@ -52,7 +52,7 @@ class _HomeState extends State<Home> {
                   ),
                 ),
                 const Text(
-                  'GOVSNAP',
+                  'INSIGHTS',
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 20,
@@ -96,40 +96,15 @@ class _HomeState extends State<Home> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 20, vertical: 10),
                         child: ListView.builder(
+                          clipBehavior: Clip.none,
                           itemBuilder: (context, index) {
                             if (index == pressReleasesModel!.length) {
                               return SizedBox(
                                 height: size.height * 0.1,
                               );
                             }
-                            var currPressRelease = pressReleasesModel![index];
-                            return ListView.builder(
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemBuilder: (context, innerIndex) {
-                                var currMinistryPressReleases = currPressRelease
-                                    .allPressReleases![innerIndex];
-                                return ListView.builder(
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemBuilder: (context, i) {
-                                    var pressRelease = currMinistryPressReleases
-                                        .pressReleases![i];
-                                    return Hero(
-                                      tag: pressRelease.prId!,
-                                      child: HomeCard(
-                                        pr: pressRelease,
-                                        ministryName:
-                                            currMinistryPressReleases.ministry!,
-                                      ),
-                                    );
-                                  },
-                                  itemCount: currMinistryPressReleases
-                                      .pressReleases!.length,
-                                );
-                              },
-                              itemCount:
-                                  currPressRelease.allPressReleases!.length,
-                              shrinkWrap: true,
+                            return HomeCard(
+                              pr: pressReleasesModel![index],
                             );
                           },
                           itemCount: pressReleasesModel!.length + 1,

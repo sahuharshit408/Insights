@@ -3,16 +3,14 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
-import 'package:insights/screens/story_screen.dart';
+import 'package:insights/screens/pr_details_screen.dart';
 
 import '../models/press_releases_model.dart';
 
 class HomeCard extends StatelessWidget {
-  final String ministryName;
-  final PressReleases pr;
+  final PressRelease pr;
   const HomeCard({
     Key? key,
-    required this.ministryName,
     required this.pr,
   }) : super(key: key);
 
@@ -28,9 +26,8 @@ class HomeCard extends StatelessWidget {
           onTap: () {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => StoryScreen(
+                builder: (context) => PrDetailsScreen(
                   pr: pr,
-                  ministryName: ministryName,
                 ),
               ),
             );
@@ -43,7 +40,7 @@ class HomeCard extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: Image.network(pr.imageUrls![0]).image,
+                    image: Image.network(pr.thumbnail).image,
                     fit: BoxFit.cover),
               ),
               child: DecoratedBox(
@@ -65,7 +62,7 @@ class HomeCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        pr.title!,
+                        pr.title,
                         maxLines: 1,
                         softWrap: true,
                         overflow: TextOverflow.ellipsis,
@@ -85,7 +82,7 @@ class HomeCard extends StatelessWidget {
                         height: 4,
                       ),
                       Text(
-                        pr.descriptiveText!.join(" "),
+                        pr.description.join(" "),
                         maxLines: 3,
                         softWrap: true,
                         overflow: TextOverflow.ellipsis,

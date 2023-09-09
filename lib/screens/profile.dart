@@ -33,53 +33,51 @@ class Profile extends StatelessWidget {
             toolbarHeight: 180,
             centerTitle: true,
             automaticallyImplyLeading: false,
-            title: Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Profile',
-                        style: TextStyle(
-                          color: Colors.transparent,
-                          fontSize: 15,
-                          fontVariations: [
-                            FontVariation(
-                              'wght',
-                              600,
-                            ),
-                          ],
-                          fontFamily: 'Inter',
-                        ),
+            title: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Profile',
+                      style: TextStyle(
+                        color: Colors.transparent,
+                        fontSize: 15,
+                        fontVariations: [
+                          FontVariation(
+                            'wght',
+                            600,
+                          ),
+                        ],
+                        fontFamily: 'Inter',
                       ),
-                      const Text(
-                        'Profile',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 15,
-                          fontVariations: [
-                            FontVariation(
-                              'wght',
-                              600,
-                            ),
-                          ],
-                          fontFamily: 'Inter',
-                        ),
+                    ),
+                    const Text(
+                      'Profile',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                        fontVariations: [
+                          FontVariation(
+                            'wght',
+                            600,
+                          ),
+                        ],
+                        fontFamily: 'Inter',
                       ),
-                      IconButton(
-                        onPressed: () {},
-                        icon: SvgPicture.asset('assets/notify.svg'),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 60,
-                  ),
-                ],
-              ),
+                    ),
+                    IconButton(
+                      onPressed: () {},
+                      icon: SvgPicture.asset('assets/notify.svg'),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 60,
+                ),
+              ],
             ),
             actions: const [],
             backgroundColor: const Color.fromRGBO(72, 105, 98, 1),
