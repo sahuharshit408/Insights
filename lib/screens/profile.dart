@@ -2,7 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:insights/constants.dart';
+import 'package:insights/auth.dart';
+import 'package:insights/screens/Login.dart';
 import 'package:insights/screens/edit_profile.dart';
 
 Size displaySize(BuildContext context) {
@@ -475,9 +476,11 @@ class Profile extends StatelessWidget {
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.of(context).push(
+                    Auth().logout();
+                    Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
-                        builder: (context) => const EditProfile(),
+                        builder: (context) =>
+                            const LoginPage(), // Replace with your login screen
                       ),
                     );
                   },
@@ -501,7 +504,7 @@ class Profile extends StatelessWidget {
                     ),
                   ),
                   child: const Text(
-                    'Edit Profile',
+                    'Logout',
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
