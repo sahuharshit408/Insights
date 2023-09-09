@@ -10,7 +10,7 @@ class CustomTextFieldWidget extends StatelessWidget {
   final String hintText;
   final Widget? prefixIcon;
   final TextEditingController? controller;
-  
+
   const CustomTextFieldWidget({
     Key? key,
     this.keyboardType = TextInputType.text,
@@ -22,6 +22,7 @@ class CustomTextFieldWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      obscureText: hintText == "Password" ? true : false,
       controller: controller,
       keyboardType: keyboardType,
       style: const TextStyle(

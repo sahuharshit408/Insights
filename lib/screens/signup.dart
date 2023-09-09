@@ -16,14 +16,12 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  // final TextEditingController emailController = TextEditingController();
+  // final TextEditingController passwordController = TextEditingController();
   late TapGestureRecognizer _gestureRecognizer;
 
   @override
   void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
     super.dispose();
   }
 
@@ -123,11 +121,9 @@ class _SignUpState extends State<SignUp> {
                   text: "Signup",
                   onPressed: () async {
                     Auth().registerWithEmailAndPassword(
-                        emailController.text, passwordController.text);
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (context) => const LoginPage()
-                      ),
+                      context: context,
+                      email: emailController.text,
+                      password: passwordController.text,
                     );
                   },
                 ),

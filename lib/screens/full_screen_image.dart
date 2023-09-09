@@ -7,7 +7,7 @@ import 'package:insights/models/press_releases_model.dart';
 
 class FullScreenImage extends StatelessWidget {
   final String imageUrl;
-  final PressReleases pr;
+  final PressRelease pr;
   const FullScreenImage({
     Key? key,
     required this.imageUrl,
@@ -33,7 +33,7 @@ class FullScreenImage extends StatelessWidget {
             ),
             const Spacer(flex: 3),
             Hero(
-              tag: pr.prId!,
+              tag: pr.prId,
               child: Image.network(
                 imageUrl,
                 width: double.infinity,
@@ -46,7 +46,7 @@ class FullScreenImage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Text(
-                pr.title!,
+                pr.title,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
