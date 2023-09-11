@@ -7,20 +7,13 @@ import 'package:insights/screens/full_screen_image.dart';
 
 import '../models/press_releases_model.dart';
 
-class PrDetailsScreen extends StatefulWidget {
+class PrDetailsScreen extends StatelessWidget {
   final PressRelease pr;
   const PrDetailsScreen({
     Key? key,
     required this.pr,
   }) : super(key: key);
 
-  @override
-  State<PrDetailsScreen> createState() {
-    return _PrDetailState();
-  }
-}
-
-class _PrDetailState extends State<PrDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -47,15 +40,15 @@ class _PrDetailState extends State<PrDetailsScreen> {
             delegate: SliverChildListDelegate(
               [
                 Hero(
-                  tag: widget.pr.prId,
+                  tag: pr.prId,
                   child: GestureDetector(
                     onTap: () {
                       Navigator.of(context).push(PageRouteBuilder(
                         opaque: false,
                         pageBuilder: (context, animation, secondaryAnimation) =>
                             FullScreenImage(
-                          imageUrl: widget.pr.thumbnail,
-                          pr: widget.pr,
+                          imageUrl: pr.thumbnail,
+                          pr: pr,
                         ),
                       ));
                     },
@@ -66,7 +59,7 @@ class _PrDetailState extends State<PrDetailsScreen> {
                         decoration: BoxDecoration(
                           image: DecorationImage(
                             image: Image.network(
-                              widget.pr.thumbnail,
+                              pr.thumbnail,
                             ).image,
                             fit: BoxFit.cover,
                           ),
@@ -79,7 +72,7 @@ class _PrDetailState extends State<PrDetailsScreen> {
                   padding: const EdgeInsets.only(
                       left: 20, right: 20, top: 20, bottom: 10),
                   child: Text(
-                    widget.pr.title,
+                    pr.title,
                     style: const TextStyle(
                       fontSize: 22,
                       fontFamily: "Inter",
@@ -96,7 +89,7 @@ class _PrDetailState extends State<PrDetailsScreen> {
                   padding:
                       const EdgeInsets.only(left: 20, right: 20, bottom: 20),
                   child: Text(
-                    widget.pr.description.join("\n\n"),
+                    pr.description.join("\n\n"),
                     style: const TextStyle(
                       fontSize: 18,
                       fontFamily: "Inter",

@@ -18,15 +18,17 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   List<PressRelease>? pressReleasesModel;
-
+  Service? apiService;
   @override
   void initState() {
+    apiService = Service();
     getReleases();
+
     super.initState();
   }
 
   Future<void> getReleases() async {
-    pressReleasesModel = await getPressReleases();
+    pressReleasesModel = await apiService!.getPressReleases();
     setState(() {});
   }
 

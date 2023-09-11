@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 import 'package:insights/screens/pr_details_screen.dart';
+import 'package:insights/service.dart';
 
 import '../models/press_releases_model.dart';
 
@@ -24,6 +25,7 @@ class HomeCard extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           onTap: () {
+            Service().getPrDetails(prId: pr.prId);
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) => PrDetailsScreen(
