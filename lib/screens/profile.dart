@@ -79,7 +79,6 @@ class Profile extends StatelessWidget {
                 ),
               ],
             ),
-            actions: const [],
             backgroundColor: const Color.fromRGBO(72, 105, 98, 1),
           ),
           body: SingleChildScrollView(

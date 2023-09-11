@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:insights/Providers/card_provider.dart';
 import 'package:insights/constants.dart';
 import 'package:insights/widgets/home_card.dart';
 import 'package:insights/utils/loader.dart';
+import 'package:provider/provider.dart';
 
 import '../models/press_releases_model.dart';
 import '../service.dart';
@@ -17,7 +19,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  List<PressRelease>? pressReleasesModel;
 
   @override
   void initState() {
@@ -26,12 +27,14 @@ class _HomeState extends State<Home> {
   }
 
   Future<void> getReleases() async {
-    pressReleasesModel = await getPressReleases();
-    setState(() {});
+    final provider = Provider.of<PrPovider>(context, listen: false);
+      List<PressRelease> pressReleasesModel = await getPressReleases();
+    provider.setAllPrs(pressReleasesModel);
   }
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<PrPovider>(context);
     final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -75,9 +78,9 @@ class _HomeState extends State<Home> {
         ],
         backgroundColor: const Color.fromRGBO(72, 105, 98, 1),
       ),
-      body: pressReleasesModel == null
+      body: provider.getAllPrs == null
           ? const Loader()
-          : pressReleasesModel!.isEmpty
+          : provider.getAllPrs!.isEmpty
               ? const SizedBox.expand(
                   child: Center(
                     child: Text(
@@ -98,16 +101,16 @@ class _HomeState extends State<Home> {
                         child: ListView.builder(
                           clipBehavior: Clip.none,
                           itemBuilder: (context, index) {
-                            if (index == pressReleasesModel!.length) {
+                            if (index == provider.getAllPrs!.length) {
                               return SizedBox(
                                 height: size.height * 0.1,
                               );
                             }
                             return HomeCard(
-                              pr: pressReleasesModel![index],
+                              pr: provider.getAllPrs![index],
                             );
                           },
-                          itemCount: pressReleasesModel!.length + 1,
+                          itemCount: provider.getAllPrs!.length + 1,
                         ),
                       ),
                     ),
