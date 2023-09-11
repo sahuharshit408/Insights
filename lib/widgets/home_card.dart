@@ -1,10 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
-
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:insights/Providers/card_provider.dart';
 import 'package:insights/screens/pr_details_screen.dart';
-
+import 'package:provider/provider.dart';
 import '../models/press_releases_model.dart';
 
 class HomeCard extends StatelessWidget {
@@ -14,8 +14,12 @@ class HomeCard extends StatelessWidget {
     required this.pr,
   }) : super(key: key);
 
+
+
   @override
   Widget build(context) {
+    
+    final provider = Provider.of<PrPovider>(context, listen: true);
     final size = MediaQuery.of(context).size;
     return SizedBox(
       height: size.width * 0.9,
@@ -36,7 +40,10 @@ class HomeCard extends StatelessWidget {
             elevation: 8,
             clipBehavior: Clip.antiAliasWithSaveLayer,
             shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(18))),
+              borderRadius: BorderRadius.all(
+                Radius.circular(18),
+              ),
+            ),
             child: Container(
               decoration: BoxDecoration(
                 image: DecorationImage(
@@ -55,51 +62,91 @@ class HomeCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        pr.title,
-                        maxLines: 1,
-                        softWrap: true,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontFamily: "Inter",
-                          fontVariations: [
-                            FontVariation(
-                              'wght',
-                              700,
-                            ),
-                          ],
-                          color: Colors.white,
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: provider.bookmarks.any((element) => element.prId == pr.prId)
+                              ? InkWell(
+                                  onTap: () {
+                                   
+                                    provider.toggleBookmark(pr.prId);
+                                  },
+                                  child:SvgPicture.asset(
+                                      "assets/bookmark-fill.svg",
+                                      height: 28,
+                                      width: 28,
+                                      color: Color.fromARGB(255, 0, 0, 0),
+                                    
+                                  ),
+                                )
+                              : InkWell(
+                                  onTap: () {
+                                   
+                                    provider.toggleBookmark(pr.prId);
+                                  },
+                                  child: SvgPicture.asset(
+                                      'assets/bookmark.svg',
+                                      height: 28,
+                                      width: 28,
+                                      color: Color.fromARGB(255, 0, 0, 0),
+                                 
+                                  ),
+                                ),
                         ),
-                      ),
-                      const SizedBox(
-                        height: 4,
-                      ),
-                      Text(
-                        pr.description.join(" "),
-                        maxLines: 3,
-                        softWrap: true,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 12,
-                          fontFamily: "Inter",
-                          fontVariations: [
-                            FontVariation(
-                              'wght',
-                              500,
+                      ],
+                    ),
+                    const Spacer(),
+                    Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            pr.title,
+                            maxLines: 1,
+                            softWrap: true,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontFamily: "Inter",
+                              fontVariations: [
+                                FontVariation(
+                                  'wght',
+                                  700,
+                                ),
+                              ],
+                              color: Colors.white,
                             ),
-                          ],
-                        ),
+                          ),
+                          const SizedBox(
+                            height: 4,
+                          ),
+                          Text(
+                            pr.description.join(" "),
+                            maxLines: 3,
+                            softWrap: true,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontFamily: "Inter",
+                              fontVariations: [
+                                FontVariation(
+                                  'wght',
+                                  500,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),

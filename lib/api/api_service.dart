@@ -76,11 +76,14 @@ class ApiService {
     try {
       var isConnected = await checkInternet();
       if (!isConnected) {
-        return Future.error(ResBaseModel(
+        return Future.error(
+          ResBaseModel(
             message:
                 "Internet not connected, Please check your network connection",
             status: false,
-            data: Data(userid: "null")));
+            data: Data(userid: "null"),
+          ),
+        );
       }
       return await (_dio.get(
         endUrl,
