@@ -2,8 +2,9 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:insights/Providers/card_provider.dart';
+import 'package:insights/Providers/pr_provider.dart';
 import 'package:insights/screens/pr_details_screen.dart';
+import 'package:insights/service.dart';
 import 'package:provider/provider.dart';
 import '../models/press_releases_model.dart';
 
@@ -14,11 +15,8 @@ class HomeCard extends StatelessWidget {
     required this.pr,
   }) : super(key: key);
 
-
-
   @override
   Widget build(context) {
-    
     final provider = Provider.of<PrPovider>(context, listen: true);
     final size = MediaQuery.of(context).size;
     return SizedBox(
@@ -27,7 +25,11 @@ class HomeCard extends StatelessWidget {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () {
+          onTap: () async {
+            Service()
+                .getPrDetails(prId: pr.prId)
+                .then((value) => provider.setPrDetails(pr.prId, value));
+
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) => PrDetailsScreen(
@@ -69,31 +71,28 @@ class HomeCard extends StatelessWidget {
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: provider.bookmarks.any((element) => element.prId == pr.prId)
+                          child: provider.bookmarks
+                                  .any((element) => element.prId == pr.prId)
                               ? InkWell(
                                   onTap: () {
-                                   
                                     provider.toggleBookmark(pr.prId);
                                   },
-                                  child:SvgPicture.asset(
-                                      "assets/bookmark-fill.svg",
-                                      height: 28,
-                                      width: 28,
-                                      color: Color.fromARGB(255, 0, 0, 0),
-                                    
+                                  child: SvgPicture.asset(
+                                    "assets/bookmark-fill.svg",
+                                    height: 28,
+                                    width: 28,
+                                    color: const Color.fromARGB(255, 0, 0, 0),
                                   ),
                                 )
                               : InkWell(
                                   onTap: () {
-                                   
                                     provider.toggleBookmark(pr.prId);
                                   },
                                   child: SvgPicture.asset(
-                                      'assets/bookmark.svg',
-                                      height: 28,
-                                      width: 28,
-                                      color: Color.fromARGB(255, 0, 0, 0),
-                                 
+                                    'assets/bookmark.svg',
+                                    height: 28,
+                                    width: 28,
+                                    color: const Color.fromARGB(255, 0, 0, 0),
                                   ),
                                 ),
                         ),

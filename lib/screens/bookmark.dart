@@ -1,13 +1,10 @@
 import 'dart:ui';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:insights/Providers/card_provider.dart';
+import 'package:insights/Providers/pr_provider.dart';
 import 'package:insights/constants.dart';
 import 'package:insights/screens/pr_details_screen.dart';
 import 'package:provider/provider.dart';
-
-
 
 class Bookmark extends StatefulWidget {
   const Bookmark({Key? key}) : super(key: key);
@@ -17,38 +14,12 @@ class Bookmark extends StatefulWidget {
 }
 
 class _BookmarkState extends State<Bookmark> {
-  Dio dio = Dio(
-    BaseOptions(baseUrl: ' https://synth-ai-envoys.onrender.com'),
-  );
-
   @override
   void initState() {
     super.initState();
-    fetchData();
   }
 
   final prProvider = Provider.of<PrPovider>;
-
-
-  Future<void> fetchData() async {
-    try {
-      Response response =
-          await dio.get('/addPRToBookmark/<prId>'); // Replace with your API endpoint
-      if (response.statusCode == 200) {
-        // Handle successful response
-        final data = response.data;
-        // Update your provider with the fetched data
-        PrPovider.toggleBookmark(PrPovider()); 
-        // Example: prProvider.updateData(data);
-      } else {
-        // Handle error response
-        // Example: prProvider.setErrorState();
-      }
-    } catch (e) {
-      // Handle Dio error
-      // Example: prProvider.setErrorState();
-    }
-  }
 
   @override
   Widget build(BuildContext context) {

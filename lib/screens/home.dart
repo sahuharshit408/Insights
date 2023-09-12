@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:insights/Providers/card_provider.dart';
+import 'package:insights/Providers/pr_provider.dart';
 import 'package:insights/constants.dart';
 import 'package:insights/widgets/home_card.dart';
 import 'package:insights/utils/loader.dart';
@@ -19,16 +19,20 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-
+  List<PressRelease>? pressReleasesModel;
+  Service? apiService;
   @override
   void initState() {
+    apiService = Service();
     getReleases();
+
     super.initState();
   }
 
   Future<void> getReleases() async {
     final provider = Provider.of<PrPovider>(context, listen: false);
-      List<PressRelease> pressReleasesModel = await getPressReleases();
+    List<PressRelease> pressReleasesModel =
+        await apiService!.getPressReleases();
     provider.setAllPrs(pressReleasesModel);
   }
 

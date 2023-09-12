@@ -45,6 +45,8 @@ dependencies:
   carousel_slider: ^4.2.1
   google_sign_in: ^6.1.5
   shared_preferences: ^2.2.1
+  video_player: ^2.7.1
+  appinio_video_player: ^1.2.2
 
 dev_dependencies:
   flutter_test:
