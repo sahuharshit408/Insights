@@ -54,23 +54,26 @@ class _BottomNavState extends State<BottomNav> {
           },
           items: [
             BottomNavigationBarItem(
-              icon: SvgPicture.asset(
+              icon: Image.asset('assets/home_active.png'),
+              label: "",
+              activeIcon: SvgPicture.asset(
                 'assets/home.svg',
               ),
-              label: "",
             ),
             BottomNavigationBarItem(
               icon: SvgPicture.asset('assets/bookmark.svg'),
               label: "",
+              activeIcon: Image.asset('assets/bookmark_active.png'),
             ),
             BottomNavigationBarItem(
               icon: SvgPicture.asset('assets/notify.svg'),
               label: "",
+              activeIcon: Image.asset('assets/notification_active.png'),
             ),
             BottomNavigationBarItem(
               icon: SvgPicture.asset('assets/person.svg'),
-              activeIcon: SvgPicture.asset(
-                'assets/person.svg',
+              activeIcon: Image.asset(
+                'assets/profile_active.png',
               ),
               label: "",
             ),

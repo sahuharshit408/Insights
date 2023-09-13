@@ -18,6 +18,11 @@ class Auth {
     return true;
   }
 
+  String? getUserId() {
+    final user = _auth.currentUser;
+    return user?.uid;
+  }
+
   Future<void> registerWithEmailAndPassword({
     required BuildContext context,
     required String email,

@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:ui';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import 'package:insights/models/press_releases_model.dart';
@@ -33,9 +34,9 @@ class FullScreenImage extends StatelessWidget {
             ),
             const Spacer(flex: 3),
             Hero(
-              tag: pr.prId,
-              child: Image.network(
-                imageUrl,
+              tag: pr.prId ?? "",
+              child: CachedNetworkImage(
+                imageUrl: imageUrl,
                 width: double.infinity,
                 fit: BoxFit.cover,
               ),
@@ -46,7 +47,7 @@ class FullScreenImage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Text(
-                pr.title,
+                pr.title ?? "",
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(

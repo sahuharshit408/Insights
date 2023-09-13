@@ -15,7 +15,7 @@ class Service {
       List<PressRelease> releases = response.data
           .map<PressRelease>((e) => PressRelease.fromJson(e))
           .toList();
-      print(releases.length);
+
       return releases;
     } catch (e) {
       return [];

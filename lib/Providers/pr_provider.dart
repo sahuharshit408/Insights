@@ -3,10 +3,22 @@ import 'package:insights/models/press_releases_model.dart';
 
 class PrPovider with ChangeNotifier {
   List<PressRelease>? _allPrs;
-  List<PressRelease>? get getAllPrs => _allPrs;
+  // = getStringList("allPrs") != null
+  //     ? getStringList("allPrs")!
+  //         .map((e) => PressRelease.fromJson(json.decode(e)))
+  //         .toList()
+  //     : null;
+  List<PressRelease>? get getAllPrs {
+    return _allPrs;
+  }
 
   void setAllPrs(List<PressRelease> prs) {
     _allPrs = prs;
+    // List<String>? encodedPrs =
+    //     _allPrs == null ? null : _allPrs!.map((e) => json.encode(e)).toList();
+    // if (encodedPrs != null) {
+    //   setStringList("allPrs", encodedPrs);
+    // }
     notifyListeners();
   }
 
@@ -19,24 +31,6 @@ class PrPovider with ChangeNotifier {
         ? _bookmarks.removeWhere((element) => element.prId == prId)
         : _bookmarks
             .add(_allPrs!.firstWhere((element) => element.prId == prId));
-    notifyListeners();
-  }
-
-  Map<String, List<String>> _prDetails = {};
-
-  Map<String, List<String>> get prDetails => _prDetails;
-
-  void setPrDetails(String prId, List<String> imagesVideos) {
-    _prDetails[prId] = imagesVideos;
-    notifyListeners();
-  }
-
-  List<String> getPrDetails(String prId) {
-    return _prDetails[prId] ?? [];
-  }
-
-  void clearPrDetails() {
-    _prDetails = {};
     notifyListeners();
   }
 
