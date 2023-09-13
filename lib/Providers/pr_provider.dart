@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:insights/models/press_releases_model.dart';
 
 class PrPovider with ChangeNotifier {
@@ -11,6 +12,8 @@ class PrPovider with ChangeNotifier {
   List<PressRelease>? get getAllPrs {
     return _allPrs;
   }
+
+  final querySearchController = TextEditingController();
 
   void setAllPrs(List<PressRelease> prs) {
     _allPrs = prs;

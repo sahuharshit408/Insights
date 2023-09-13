@@ -41,4 +41,20 @@ class Service {
       return [];
     }
   }
+
+  Future<List<PressRelease>> getPrFromQuery(String q) async {
+    apiService = ApiService();
+    try {
+      var response = await apiService!.get(
+        'getPressReleasesFromQuery?q=$q',
+      );
+      List<PressRelease> releases = response.data
+          .map<PressRelease>((e) => PressRelease.fromJson(e))
+          .toList();
+
+      return releases;
+    } catch (e) {
+      return [];
+    }
+  }
 }
