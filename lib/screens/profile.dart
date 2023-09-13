@@ -82,7 +82,7 @@ class Profile extends StatelessWidget {
             backgroundColor: const Color.fromRGBO(72, 105, 98, 1),
           ),
           body: SingleChildScrollView(
-            child: Column(
+              child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(
@@ -514,14 +514,18 @@ class Profile extends StatelessWidget {
           ),
         ),
         const Positioned(
-          top: 120,
+          top: 140,
           right: 0,
           left: 0,
           child: CircleAvatar(
-            backgroundImage: NetworkImage(
-              'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
+            radius: 66,
+            backgroundColor: Colors.white,
+            child: CircleAvatar(
+              backgroundImage: NetworkImage(
+                'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
+              ),
+              radius: 60,
             ),
-            radius: 60,
           ),
         ),
       ],
