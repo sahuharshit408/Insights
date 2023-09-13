@@ -1,12 +1,13 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:ui';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:insights/Providers/pr_provider.dart';
 import 'package:insights/api/api_service.dart';
 import 'package:insights/auth.dart';
 import 'package:insights/screens/pr_details_screen.dart';
-import 'package:insights/service.dart';
 import 'package:provider/provider.dart';
 import '../models/press_releases_model.dart';
 
@@ -28,12 +29,8 @@ class HomeCard extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           onTap: () async {
-            Service()
-                .getPrDetails(prId: pr.prId)
-                .then((value) => provider.setPrDetails(pr.prId, value));
-
             Navigator.of(context).push(
-              MaterialPageRoute(
+              CupertinoPageRoute(
                 builder: (context) => PrDetailsScreen(
                   pr: pr,
                 ),
@@ -51,7 +48,7 @@ class HomeCard extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: Image.network(pr.thumbnail).image,
+                    image: CachedNetworkImageProvider(pr.imageUrls![0]),
                     fit: BoxFit.cover),
               ),
               child: DecoratedBox(
@@ -90,7 +87,6 @@ class HomeCard extends StatelessWidget {
                               : InkWell(
                                   onTap: () {
                                     provider.toggleBookmark(pr.prId);
-                                    Service().addBookmarks(prId: pr.prId,userId: Auth().getCurrentUserId());
                                   },
                                   child: SvgPicture.asset(
                                     'assets/bookmark.svg',
@@ -110,7 +106,7 @@ class HomeCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            pr.title,
+                            pr.title ?? "",
                             maxLines: 1,
                             softWrap: true,
                             overflow: TextOverflow.ellipsis,
@@ -130,7 +126,7 @@ class HomeCard extends StatelessWidget {
                             height: 4,
                           ),
                           Text(
-                            pr.description.join(" "),
+                            pr.description?.join(" ") ?? "",
                             maxLines: 3,
                             softWrap: true,
                             overflow: TextOverflow.ellipsis,

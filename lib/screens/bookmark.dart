@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:insights/Providers/pr_provider.dart';
 import 'package:insights/constants.dart';
@@ -43,58 +44,81 @@ class _BookmarkState extends State<Bookmark> {
         itemCount: prProvider.bookmarks.length,
         itemBuilder: (context, index) {
           final card = prProvider.bookmarks[index];
-          return Container(
-            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(
-                color: Colors.grey,
-                width: 1,
+          return Dismissible(
+            key: Key(card.prId ?? ""),
+            onDismissed: (direction) {
+              prProvider.toggleBookmark(card.prId!);
+            },
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(
+                  color: Colors.grey,
+                  width: 1,
+                ),
+                borderRadius: BorderRadius.circular(12),
               ),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: ListTile(
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
+              child: InkWell(
+                onTap: () => Navigator.of(context).push(
+                  CupertinoModalPopupRoute(
                     builder: (context) => PrDetailsScreen(
                       pr: card,
                     ),
                   ),
-                );
-              },
-              leading: ClipRRect(
-                borderRadius: BorderRadius.circular(8.0),
-                child: Image.network(
-                  card.thumbnail, // Replace with your image URL
-                  width: 80.0,
-                  height: 80.0,
-                  fit: BoxFit.cover,
                 ),
-              ),
-              title: Column(
-                children: [
-                  Text(
-                    card.title,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 15,
-                      fontVariations: [FontVariation("wght", 700)],
-                    ),
+                child: Container(
+                  height: 100,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                  Text(
-                    card.description.join(" "),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 2,
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 15,
-                      fontVariations: [FontVariation("wght", 400)],
-                    ),
+                  child: Row(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(8.0),
+                        child: Image.network(
+                          card.imageUrls![0], // Replace with your image URL
+                          height: 100,
+                          width: 80.0,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 8),
+                          child: Column(
+                            children: [
+                              Text(
+                                card.title ?? "",
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 15,
+                                  fontVariations: [FontVariation("wght", 700)],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              Text(
+                                card.description?.join(" ") ?? "",
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 2,
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 15,
+                                  fontVariations: [FontVariation("wght", 400)],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
           ); //yaha pe kya dalenge apan

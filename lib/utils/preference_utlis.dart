@@ -133,9 +133,9 @@ Future<String> getStringF(String key, [String? defValue]) async {
   return value;
 }
 
-List<String> getStringList(String key, [List<String>? defValue]) {
+List<String>? getStringList(String key, [List<String>? defValue]) {
   isPreferenceReady();
-  return _prefsInstance!.getStringList(key) ?? defValue ?? [""];
+  return _prefsInstance!.getStringList(key) ?? defValue;
 }
 
 /// Returns a Future.
@@ -146,7 +146,7 @@ Future<List<String>> getStringListF(String key,
     var prefs = await _instance;
     value = prefs.getStringList(key) ?? defValue ?? [""];
   } else {
-    value = getStringList(key);
+    value = getStringList(key)!;
   }
   return value;
 }
