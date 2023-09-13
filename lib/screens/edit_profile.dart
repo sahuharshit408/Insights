@@ -51,11 +51,7 @@ class _EditProfileState extends State<EditProfile> {
                         children: [
                           IconButton(
                             onPressed: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => const Profile(),
-                                ),
-                              );
+                              Navigator.of(context).pop();
                             },
                             icon: SvgPicture.asset('assets/back.svg'),
                           ),
