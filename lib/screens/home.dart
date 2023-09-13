@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:ui';
 
@@ -25,10 +26,24 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   Service? apiService;
+  Timer? _throttle;
+
   @override
   void initState() {
+    final provider = Provider.of<PrPovider>(context, listen: false);
+    provider.querySearchController.addListener(() {
+      if (_throttle?.isActive ?? false) return;
+      _throttle = Timer(const Duration(milliseconds: 500), () {
+        // Make your API call here
+        final searchText = provider.querySearchController.text;
+        // Call your API with searchText
+        getPrFromQuery(searchText);
+      });
+    });
     apiService = Service();
-    getReleases();
+    provider.querySearchController.text.isNotEmpty
+        ? getPrFromQuery(provider.querySearchController.text)
+        : getReleases();
 
     super.initState();
   }
@@ -44,12 +59,21 @@ class _HomeState extends State<Home> {
     }
   }
 
-  final _searchController = TextEditingController();
+  Future<void> getPrFromQuery(String q) async {
+    try {
+      final provider = Provider.of<PrPovider>(context, listen: false);
+      List<PressRelease> pressReleasesModel =
+          await apiService!.getPrFromQuery(q);
+      provider.setAllPrs(pressReleasesModel);
+    } catch (e) {
+      print(e);
+    }
+  }
 
   @override
   void dispose() {
     super.dispose();
-    _searchController.dispose();
+    _throttle!.cancel();
   }
 
   bool isSearchOn = false;
@@ -87,7 +111,7 @@ class _HomeState extends State<Home> {
                           height: 40,
                           width: size.width * 0.6,
                           child: TextField(
-                            controller: _searchController,
+                            controller: provider.querySearchController,
                             style: const TextStyle(
                               // fontSize: 12,
                               color: Colors.grey,
@@ -95,6 +119,13 @@ class _HomeState extends State<Home> {
                                 FontVariation("wght", 600),
                               ],
                             ),
+                            onSubmitted: (value) {
+                              if (value.isNotEmpty) {
+                                getPrFromQuery(value);
+                              } else {
+                                getReleases();
+                              }
+                            },
                             maxLines: 1,
                             decoration: InputDecoration(
                               isDense: true,
