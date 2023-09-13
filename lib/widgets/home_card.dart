@@ -3,6 +3,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:insights/Providers/pr_provider.dart';
+import 'package:insights/api/api_service.dart';
+import 'package:insights/auth.dart';
 import 'package:insights/screens/pr_details_screen.dart';
 import 'package:insights/service.dart';
 import 'package:provider/provider.dart';
@@ -76,6 +78,7 @@ class HomeCard extends StatelessWidget {
                               ? InkWell(
                                   onTap: () {
                                     provider.toggleBookmark(pr.prId);
+                                    
                                   },
                                   child: SvgPicture.asset(
                                     "assets/bookmark-fill.svg",
@@ -87,6 +90,7 @@ class HomeCard extends StatelessWidget {
                               : InkWell(
                                   onTap: () {
                                     provider.toggleBookmark(pr.prId);
+                                    Service().addBookmarks(prId: pr.prId,userId: Auth().getCurrentUserId());
                                   },
                                   child: SvgPicture.asset(
                                     'assets/bookmark.svg',

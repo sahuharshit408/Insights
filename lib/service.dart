@@ -41,4 +41,19 @@ class Service {
       return [];
     }
   }
+
+  Future<void> addBookmarks({required String prId,required String userId}) async {
+    apiService = ApiService();
+    try {
+      var response = await apiService!.post(
+        'addPRToBookmark/$prId?userId=$userId',
+      );
+      print(response.data);
+      return;
+      // return details;
+    } catch (e) {
+      print(e);
+      return ;
+    }
+  }
 }

@@ -3,7 +3,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:insights/Providers/pr_provider.dart';
 import 'package:insights/constants.dart';
+import 'package:insights/models/press_releases_model.dart';
 import 'package:insights/screens/pr_details_screen.dart';
+import 'package:insights/service.dart';
 import 'package:provider/provider.dart';
 
 class Bookmark extends StatefulWidget {
@@ -14,10 +16,7 @@ class Bookmark extends StatefulWidget {
 }
 
 class _BookmarkState extends State<Bookmark> {
-  @override
-  void initState() {
-    super.initState();
-  }
+  
 
   final prProvider = Provider.of<PrPovider>;
 
