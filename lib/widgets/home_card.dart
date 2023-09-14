@@ -79,7 +79,6 @@ class HomeCard extends StatelessWidget {
                               ? InkWell(
                                   onTap: () {
                                     provider.toggleBookmark(pr.prId);
-                                    service.removeBookmarks(prId: pr.prId, userId: Auth().getCurrentUserId());
                                   },
                                   child: SvgPicture.asset(
                                     "assets/bookmark-fill.svg",
@@ -91,7 +90,6 @@ class HomeCard extends StatelessWidget {
                               : InkWell(
                                   onTap: () {
                                     provider.toggleBookmark(pr.prId);
-                                    service.addBookmarks(prId: pr.prId, userId: Auth().getCurrentUserId());
                                   },
                                   child: SvgPicture.asset(
                                     'assets/bookmark.svg',

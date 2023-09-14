@@ -1,4 +1,5 @@
 import 'package:insights/api/api_service.dart';
+import 'package:insights/auth.dart';
 import 'package:insights/models/press_releases_model.dart';
 
 class Service {
@@ -72,5 +73,24 @@ class Service {
     }
   }
 
-  
+  Future<List<PressRelease>> getUserBookmark() async {
+    apiService = ApiService();
+    try {
+      var response = await apiService!.get(
+        'getUserBookmarks?userId=${Auth().getCurrentUserId()}',
+      );
+      print("AYUSH ${response.data}");
+      List<PressRelease> releases = response.data
+          .map<PressRelease>((e) => PressRelease.fromJson(e))
+          .toList();
+      
+      return releases;
+      // return details;
+    } catch (e) {
+      print(e);
+      return [];
+    }
+  }
+
+
 }
