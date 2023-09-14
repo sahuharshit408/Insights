@@ -77,7 +77,7 @@ class _BookmarkState extends State<Bookmark> {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(8.0),
                         child: Image.network(
-                          card.imageUrls![0], // Replace with your image URL
+                          card.imageUrls[0], // Replace with your image URL
                           height: 100,
                           width: 80.0,
                           fit: BoxFit.cover,

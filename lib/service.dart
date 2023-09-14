@@ -56,4 +56,21 @@ class Service {
       return ;
     }
   }
+
+  Future<void> removeBookmarks({required String prId,required String userId}) async {
+    apiService = ApiService();
+    try {
+      var response = await apiService!.get(
+        'removePRFromBookmark/$prId?userId=$userId',
+      );
+      print(response.data);
+      return;
+      // return details;
+    } catch (e) {
+      print(e);
+      return ;
+    }
+  }
+
+  
 }
