@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-const userIcon = "assets/user.png";
 
 const Color c1 = Color(0x00303532);
 const Color c2 = Color(0x00303532);

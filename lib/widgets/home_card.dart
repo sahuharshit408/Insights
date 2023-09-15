@@ -5,12 +5,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:insights/Providers/pr_provider.dart';
+import 'package:insights/api/api_service.dart';
+import 'package:insights/auth.dart';
 import 'package:insights/screens/pr_details_screen.dart';
+import 'package:insights/service.dart';
 import 'package:provider/provider.dart';
 import '../models/press_releases_model.dart';
 
 class HomeCard extends StatelessWidget {
   final PressRelease pr;
+  
   const HomeCard({
     Key? key,
     required this.pr,
@@ -18,6 +22,8 @@ class HomeCard extends StatelessWidget {
 
   @override
   Widget build(context) {
+    Service service = Service();
+
     final provider = Provider.of<PrPovider>(context, listen: true);
     final size = MediaQuery.of(context).size;
     return SizedBox(
@@ -46,7 +52,7 @@ class HomeCard extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: CachedNetworkImageProvider(pr.imageUrls![0]),
+                    image: CachedNetworkImageProvider(pr.imageUrls[0]),
                     fit: BoxFit.cover),
               ),
               child: DecoratedBox(
@@ -72,7 +78,7 @@ class HomeCard extends StatelessWidget {
                                   .any((element) => element.prId == pr.prId)
                               ? InkWell(
                                   onTap: () {
-                                    provider.toggleBookmark(pr.prId!);
+                                    provider.toggleBookmark(pr.prId);
                                   },
                                   child: SvgPicture.asset(
                                     "assets/bookmark-fill.svg",
@@ -83,7 +89,7 @@ class HomeCard extends StatelessWidget {
                                 )
                               : InkWell(
                                   onTap: () {
-                                    provider.toggleBookmark(pr.prId!);
+                                    provider.toggleBookmark(pr.prId);
                                   },
                                   child: SvgPicture.asset(
                                     'assets/bookmark.svg',

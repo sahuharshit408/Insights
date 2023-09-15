@@ -18,9 +18,9 @@ class Auth {
     return true;
   }
 
-  String? getUserId() {
+  String getCurrentUserId() {
     final user = _auth.currentUser;
-    return user?.uid;
+    return user!.uid;
   }
 
   Future<void> registerWithEmailAndPassword({

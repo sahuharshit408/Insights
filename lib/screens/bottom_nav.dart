@@ -2,10 +2,13 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:insights/Providers/pr_provider.dart';
 import 'package:insights/constants.dart';
 import 'package:insights/screens/bookmark.dart';
 import 'package:insights/screens/home.dart';
 import 'package:insights/screens/profile.dart';
+import 'package:insights/service.dart';
+import 'package:provider/provider.dart';
 
 class BottomNav extends StatefulWidget {
   const BottomNav({super.key});
@@ -17,6 +20,7 @@ class BottomNav extends StatefulWidget {
 }
 
 class _BottomNavState extends State<BottomNav> {
+  Service apiService = Service();
   int selectedIndex = 0;
 
   final List<Widget> _widgetOptions = <Widget>[
@@ -33,6 +37,22 @@ class _BottomNavState extends State<BottomNav> {
     ),
     const Profile(),
   ];
+
+
+  @override
+  void initState() {
+    super.initState();
+    getBookmarks();
+  }
+
+  Future<void> getBookmarks() async{
+    final provider = Provider.of<PrPovider>(context, listen: false);
+    
+    provider.setUserBookmarks(await apiService.getUserBookmark());
+
+    print('AYUSH ${await apiService.getUserBookmark()} ');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
