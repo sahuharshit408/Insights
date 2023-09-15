@@ -73,7 +73,7 @@ class _HomeState extends State<Home> {
   @override
   void dispose() {
     super.dispose();
-    _throttle!.cancel();
+    _throttle?.cancel();
   }
 
   bool isSearchOn = false;
