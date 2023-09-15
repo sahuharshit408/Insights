@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:insights/auth.dart';
 import 'package:insights/models/press_releases_model.dart';
 import 'package:insights/service.dart';
 
 class PrPovider with ChangeNotifier {
-
   Service service = Service();
 
   List<PressRelease>? _allPrs;
@@ -16,6 +16,8 @@ class PrPovider with ChangeNotifier {
   List<PressRelease>? get getAllPrs {
     return _allPrs;
   }
+
+  final querySearchController = TextEditingController();
 
   void setAllPrs(List<PressRelease> prs) {
     _allPrs = prs;
@@ -31,11 +33,10 @@ class PrPovider with ChangeNotifier {
 
   List<PressRelease> get bookmarks => _bookmarks;
 
-  void setUserBookmarks(List<PressRelease> boomarks)async{
+  void setUserBookmarks(List<PressRelease> boomarks) async {
     _bookmarks = boomarks;
     notifyListeners();
   }
-
 
   void toggleBookmark(String prId) {
     _bookmarks.any((element) => element.prId == prId)
@@ -44,13 +45,14 @@ class PrPovider with ChangeNotifier {
     notifyListeners();
   }
 
-  void _addToBookMark(String prId)async{
-    service.addBookmarks(prId: prId,userId: Auth().getCurrentUserId());
+  void _addToBookMark(String prId) async {
+    service.addBookmarks(prId: prId, userId: Auth().getCurrentUserId());
     _bookmarks.add(_allPrs!.firstWhere((element) => element.prId == prId));
     notifyListeners();
   }
-  void _removeFromBookMark(String prId)async{
-    service.removeBookmarks(prId: prId, userId:Auth().getCurrentUserId() );
+
+  void _removeFromBookMark(String prId) async {
+    service.removeBookmarks(prId: prId, userId: Auth().getCurrentUserId());
     _bookmarks.removeWhere((element) => element.prId == prId);
     notifyListeners();
   }

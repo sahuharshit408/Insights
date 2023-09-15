@@ -43,7 +43,24 @@ class Service {
     }
   }
 
-  Future<void> addBookmarks({required String prId,required String userId}) async {
+  Future<List<PressRelease>> getPrFromQuery(String q) async {
+    apiService = ApiService();
+    try {
+      var response = await apiService!.get(
+        'getPressReleasesFromQuery?q=$q',
+      );
+      List<PressRelease> releases = response.data
+          .map<PressRelease>((e) => PressRelease.fromJson(e))
+          .toList();
+
+      return releases;
+    } catch (e) {
+      return [];
+    }
+  }
+
+  Future<void> addBookmarks(
+      {required String prId, required String userId}) async {
     apiService = ApiService();
     try {
       var response = await apiService!.post(
@@ -54,11 +71,12 @@ class Service {
       // return details;
     } catch (e) {
       print(e);
-      return ;
+      return;
     }
   }
 
-  Future<void> removeBookmarks({required String prId,required String userId}) async {
+  Future<void> removeBookmarks(
+      {required String prId, required String userId}) async {
     apiService = ApiService();
     try {
       var response = await apiService!.get(
@@ -69,7 +87,7 @@ class Service {
       // return details;
     } catch (e) {
       print(e);
-      return ;
+      return;
     }
   }
 
@@ -83,7 +101,7 @@ class Service {
       List<PressRelease> releases = response.data
           .map<PressRelease>((e) => PressRelease.fromJson(e))
           .toList();
-      
+
       return releases;
       // return details;
     } catch (e) {
@@ -91,6 +109,4 @@ class Service {
       return [];
     }
   }
-
-
 }
