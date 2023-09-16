@@ -3,7 +3,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:insights/screens/profile.dart';
+import 'package:insights/constants.dart';
 
 Size displaySize(BuildContext context) {
   debugPrint('Size = ${MediaQuery.of(context).size}');
@@ -32,6 +32,7 @@ class EditProfile extends StatefulWidget{
 class _EditProfileState extends State<EditProfile> {
   @override
   Widget build(context) {
+    bool passwordVisible = false;
     return Stack(
       children: [
         Scaffold(
@@ -131,7 +132,7 @@ class _EditProfileState extends State<EditProfile> {
                   ],
                 ),
                 const SizedBox(
-                  height: 20
+                  height: 22
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -139,129 +140,168 @@ class _EditProfileState extends State<EditProfile> {
                     Container(
                       color: const Color.fromRGBO(255, 255, 255, 1),
                       width: displayWidth(context),
-                      child: const Padding(
-                          padding: EdgeInsets.only(left: 18.0 , right: 18.0),
+                      child: Padding(
+                          padding: const EdgeInsets.only(left: 36.0 , right: 36.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                                Text(
+                                const Text(
                                   'Username',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                    fontSize: 16,
-                                    fontFamily: "Inter",
-                                    fontVariations: [
-                                      FontVariation(
-                                        'wght',
-                                        600,
-                                      ),
-                                    ],
+                                    fontSize: 18,
+                                    fontFamily: "Poppins",
+                                    fontWeight: FontWeight.w500,
                                   ),
                                 ),
-                            SizedBox(
-                              height: 6,
+                            const SizedBox(
+                              height: 4,
                             ),
                             TextField(
                               decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide(width: 1),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  borderSide: const BorderSide(
+                                      width: 1,
+                                      color: Color.fromRGBO(169, 169, 169, 1),
+                                  ),
                                 ),
-                                contentPadding: EdgeInsets.symmetric(vertical: 8,horizontal: 6),
+                                focusedBorder: const OutlineInputBorder(
+                                  borderSide: BorderSide(color: primaryColor), // Color of the border when focused
+                                ),
+                                contentPadding: const EdgeInsets.symmetric(vertical: 10,horizontal: 8),
                               ),
-                              style: TextStyle(fontSize: 18),
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontFamily: "Poppins",
+                                fontWeight: FontWeight.w400,
+                              ),
                             ),
 
-                            SizedBox(
-                              height: 16,
+                            const SizedBox(
+                              height: 18,
                             ),
 
-                            Text(
+                            const Text(
                               'Email Id',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                fontSize: 16,
-                                fontFamily: "Inter",
-                                fontVariations: [
-                                  FontVariation(
-                                    'wght',
-                                    600,
-                                  ),
-                                ],
+                                fontSize: 18,
+                                fontFamily: "Poppins",
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
-                            SizedBox(
-                              height: 6,
+                            const SizedBox(
+                              height: 4,
                             ),
                             TextField(
                               decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide(width: 1),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  borderSide: const BorderSide(
+                                      width: 1,
+                                      color: Color.fromRGBO(169, 169, 169, 1)
+                                  ),
                                 ),
-                                contentPadding: EdgeInsets.symmetric(vertical: 8,horizontal: 6),
+                                focusedBorder: const OutlineInputBorder(
+                                  borderSide: BorderSide(color: primaryColor), // Color of the border when focused
+                                ),
+                                contentPadding: const EdgeInsets.symmetric(vertical: 10,horizontal: 8),
                               ),
-                              style: TextStyle(fontSize: 18),
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontFamily: "Poppins",
+                                fontWeight: FontWeight.w400,
+                              ),
+                              keyboardType: TextInputType.emailAddress,
                             ),
 
-                            SizedBox(
-                              height: 16,
+                            const SizedBox(
+                              height: 18,
                             ),
 
-                            Text(
+                            const Text(
                               'Phone Number',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                fontSize: 16,
-                                fontFamily: "Inter",
-                                fontVariations: [
-                                  FontVariation(
-                                    'wght',
-                                    600,
-                                  ),
-                                ],
+                                fontSize: 18,
+                                fontFamily: "Poppins",
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
-                            SizedBox(
-                              height: 6,
+                            const SizedBox(
+                              height: 4,
                             ),
                             TextField(
                               decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide(width: 1),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  borderSide: const BorderSide(
+                                      width: 1,
+                                      color: Color.fromRGBO(169, 169, 169, 1)
+                                  ),
                                 ),
-                                contentPadding: EdgeInsets.symmetric(vertical: 8,horizontal: 6),
+                                focusedBorder: const OutlineInputBorder(
+                                  borderSide: BorderSide(color: primaryColor), // Color of the border when focused
+                                ),
+                                contentPadding: const EdgeInsets.symmetric(vertical: 10,horizontal: 8),                              ),
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontFamily: "Poppins",
+                                fontWeight: FontWeight.w400,
                               ),
-                              style: TextStyle(fontSize: 18),
+                              keyboardType: TextInputType.phone,
                             ),
 
-                            SizedBox(
-                              height: 16,
+                            const SizedBox(
+                              height: 18,
                             ),
 
-                            Text(
+                            const Text(
                               'Password',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                fontSize: 16,
-                                fontFamily: "Inter",
-                                fontVariations: [
-                                  FontVariation(
-                                    'wght',
-                                    600,
-                                  ),
-                                ],
+                                fontSize: 18,
+                                fontFamily: "Poppins",
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
-                            SizedBox(
-                              height: 6,
+                            const SizedBox(
+                              height: 4,
                             ),
+
                             TextField(
                               decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide(width: 1),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  borderSide: const BorderSide(
+                                      width: 1,
+                                      color: Color.fromRGBO(169, 169, 169, 1)
+                                  ),
                                 ),
-                                contentPadding: EdgeInsets.symmetric(vertical: 8,horizontal: 6),
+                                focusedBorder: const OutlineInputBorder(
+                                  borderSide: BorderSide(color: primaryColor), // Color of the border when focused
+                                ),
+                                contentPadding: const EdgeInsets.symmetric(vertical: 10,horizontal: 8),
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    passwordVisible ? Icons.visibility : Icons.visibility_off,
+                                    color: Colors.grey,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      passwordVisible =!passwordVisible;
+                                    });
+                                  },
+                                )
                               ),
-                              style: TextStyle(fontSize: 18),
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontFamily: "Poppins",
+                                fontWeight: FontWeight.w400,
+                              ),
+                              keyboardType: TextInputType.visiblePassword,
+                              obscureText: !passwordVisible,
                             ),
                           ],
                         ),
@@ -271,7 +311,7 @@ class _EditProfileState extends State<EditProfile> {
                   ],
                 ),
                 const SizedBox(
-                    height: 30
+                    height: 60
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -292,17 +332,18 @@ class _EditProfileState extends State<EditProfile> {
                         ),
                         padding: MaterialStateProperty.all(
                           const EdgeInsets.symmetric(
-                            horizontal: 20,
-                            vertical: 10,
+                            horizontal: 120,
+                            vertical: 14,
                           ),
                         ),
                       ),
                       child: const Text(
                         'Update',
                         style: TextStyle(
+                          fontFamily: "Poppins",
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
-                          fontSize: 16,
+                          fontSize: 18,
                         ),
                       ),
                     ),
