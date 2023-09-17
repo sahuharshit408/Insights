@@ -8,6 +8,10 @@ import 'package:insights/utils/utils.dart';
 class Auth {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  Future<User?> getCurrentUser() async {
+    return _auth.currentUser;
+  }
+
   Future<bool> isLoggedIn() async {
     final user = _auth.currentUser;
     user?.getIdToken().then((value) => setString("token", value!));

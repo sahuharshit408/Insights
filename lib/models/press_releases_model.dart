@@ -11,7 +11,7 @@ class PressRelease {
     required this.language,
     required this.status,
   });
-  late final int date;
+  late final double date;
   late final String ministry;
   late final String prId;
   late final String title;
@@ -23,7 +23,7 @@ class PressRelease {
   late final String status;
 
   PressRelease.fromJson(Map<String, dynamic> json) {
-    date = json['date'];
+    date = double.tryParse('${json['date']}') ?? 0;
     ministry = json['ministry'];
     prId = json['prId'];
     title = json['title'];
@@ -61,8 +61,13 @@ class VideoUrls {
   late final String url;
 
   VideoUrls.fromJson(Map<String, dynamic> json) {
-    language = json['language'];
-    url = json['url'];
+    try {
+      language = json['language'];
+      url = json['url'];
+    } catch (e) {
+      language = '';
+      url = '';
+    }
   }
 
   Map<String, dynamic> toJson() {

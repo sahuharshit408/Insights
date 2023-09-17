@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:insights/auth.dart';
@@ -21,8 +22,31 @@ double displayWidth(BuildContext context) {
   return displaySize(context).width;
 }
 
-class Profile extends StatelessWidget {
+class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
+
+  @override
+  State<Profile> createState() => _ProfileState();
+}
+
+class _ProfileState extends State<Profile> {
+  String dp =
+      "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
+  void loadUser() async {
+    final user = await Auth().getCurrentUser();
+    setState(() {
+      if (user!.photoURL != null) {
+        dp = user.photoURL!;
+      }
+      print(user);
+    });
+  }
+
+  @override
+  void initState() {
+    loadUser();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,9 +98,9 @@ class Profile extends StatelessWidget {
                     ),
                   ],
                 ),
-                // const SizedBox(
-                //   height: 60,
-                // ),
+                const SizedBox(
+                  height: 60,
+                ),
               ],
             ),
             backgroundColor: const Color.fromRGBO(72, 105, 98, 1),
@@ -95,7 +119,7 @@ class Profile extends StatelessWidget {
                       onPressed: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => const EditProfile(),
+                            builder: (context) => EditProfile(dp: dp),
                           ),
                         );
                       },
@@ -474,10 +498,10 @@ class Profile extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () {
                     Auth().logout();
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            const LoginPage(), // Replace with your login screen
+                    Navigator.of(context).popUntil((route) => false);
+                    Navigator.of(context).push(
+                      CupertinoPageRoute(
+                        builder: (context) => const LoginPage(),
                       ),
                     );
                   },
@@ -513,18 +537,21 @@ class Profile extends StatelessWidget {
             ),
           ),
         ),
-        const Positioned(
+        Positioned(
           top: 120,
           right: 0,
           left: 0,
-          child: CircleAvatar(
-            radius: 66,
-            backgroundColor: Colors.white,
+          child: Hero(
+            tag: "dp",
             child: CircleAvatar(
-              backgroundImage: NetworkImage(
-                'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
+              radius: 66,
+              backgroundColor: Colors.white,
+              child: CircleAvatar(
+                backgroundImage: NetworkImage(
+                  dp,
+                ),
+                radius: 60,
               ),
-              radius: 60,
             ),
           ),
         ),

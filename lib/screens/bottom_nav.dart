@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:insights/Providers/pr_provider.dart';
 import 'package:insights/constants.dart';
@@ -46,9 +47,10 @@ class _BottomNavState extends State<BottomNav> {
 
   Future<void> getLocalPrAndBookmarks() async {
     final provider = Provider.of<PrPovider>(context, listen: false);
-
-    provider.getPrsFromLocal();
-    provider.setUserBookmarks(await apiService.getUserBookmark());
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      provider.getPrsFromLocal();
+      provider.setUserBookmarks(await apiService.getUserBookmark());
+    });
   }
 
   @override

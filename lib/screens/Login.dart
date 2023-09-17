@@ -10,8 +10,8 @@ import 'package:insights/screens/signup.dart';
 import '../components/custom_button.dart';
 import '../components/custom_text_field_widget.dart';
 
-final TextEditingController emailController = TextEditingController();
-final TextEditingController passwordController = TextEditingController();
+late TextEditingController emailController;
+late TextEditingController passwordController;
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -31,6 +31,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
     _gestureRecognizer = TapGestureRecognizer()
       ..onTap = () {
         Navigator.of(context).push(
