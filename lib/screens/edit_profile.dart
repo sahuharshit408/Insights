@@ -98,36 +98,8 @@ class _EditProfileState extends State<EditProfile> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(
-                  height: 58,
+                  height: 118,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    TextButton(
-                      onPressed: () {},
-                      style: ButtonStyle(
-                        elevation: MaterialStateProperty.all(0),
-                        backgroundColor: MaterialStateProperty.all(
-                          const Color.fromRGBO(255, 255, 255, 1),
-                        ),
-                        padding: MaterialStateProperty.all(
-                          const EdgeInsets.symmetric(
-                            horizontal: 20,
-                            vertical: 14,
-                          ),
-                        ),
-                      ),
-                      child: const Text(
-                        'Change Picture',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -345,24 +317,74 @@ class _EditProfileState extends State<EditProfile> {
                     ),
                   ],
                 ),
+                const SizedBox(
+                  height: 35,
+                ),
               ],
             ),
           ),
         ),
-        const Positioned(
+         Positioned(
           top: 150,
           right: 0,
           left: 0,
-          child: CircleAvatar(
-            radius: 78,
-            backgroundColor: Colors.white,
-            child: CircleAvatar(
-              backgroundImage: NetworkImage(
-                'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              Container(
+                width: 142,
+                height: 142,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                      width: 4,
+                      color: Colors.white
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      spreadRadius: 2,
+                      blurRadius: 10,
+                      color: Colors.black.withOpacity(0.1)
+                    )
+                  ],
+                  shape: BoxShape.circle,
+                  image: const DecorationImage(
+                    fit: BoxFit.cover,
+                    image: NetworkImage(
+                        'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
+                    )
+                  )
+                ),
               ),
-              radius: 72,
-            ),
-          ),
+              Positioned(
+                  bottom: 0,
+                  right: 0,
+                  left: 80,
+                  child: Container(
+                    height: 40,
+                    width: 40,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        width: 4,
+                        color: Colors.grey
+                      ),
+                        boxShadow: [
+                          BoxShadow(
+                              spreadRadius: 2,
+                              blurRadius: 10,
+                              color: Colors.black.withOpacity(0.2)
+                          )
+                        ],
+                      color: Colors.white
+                    ),
+                    child: const Icon(
+                      Icons.edit,
+                      color: primaryColor,
+                    ),
+                  )
+              )
+            ],
+          )
         ),
       ],
     );
