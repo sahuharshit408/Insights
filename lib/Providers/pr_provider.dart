@@ -26,12 +26,13 @@ class PrPovider with ChangeNotifier {
 
   void setAllPrs(List<PressRelease> prs, {bool saveToLocal = false}) {
     _allPrs = prs;
+    notifyListeners();
+
     List<String>? encodedPrs =
         _allPrs == null ? null : _allPrs!.map((e) => json.encode(e)).toList();
     if (encodedPrs != null && saveToLocal) {
       setStringList("allPrs", encodedPrs);
     }
-    notifyListeners();
   }
 
   List<PressRelease> _bookmarks = [];

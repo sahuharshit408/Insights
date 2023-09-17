@@ -4,21 +4,25 @@ import 'package:insights/models/press_releases_model.dart';
 
 class Service {
   ApiService? apiService;
-  Future<List<PressRelease>> getPressReleases({int? date}) async {
+  Future<List<PressRelease>> getPressReleases(
+      {int? date, int page = 1, int itemsCount = 10}) async {
     apiService = ApiService();
     try {
-      var response = await apiService!.get(
-        'getPressReleasesListing?status=pending',
-        params: {
-          if (date != null) 'date': date,
-        },
-      );
+      var url = 'getPressReleasesListing?status=pending';
+      if (date != null) {
+        url += '&date=$date';
+      }
+      url += '&page=$page';
+      url += '&itemsCount=$itemsCount';
+
+      var response = await apiService!.get(url);
       List<PressRelease> releases = response.data
           .map<PressRelease>((e) => PressRelease.fromJson(e))
           .toList();
 
       return releases;
     } catch (e) {
+      print("An error occured while fetching press releases $e");
       return [];
     }
   }
@@ -43,11 +47,12 @@ class Service {
     }
   }
 
-  Future<List<PressRelease>> getPrFromQuery(String q) async {
+  Future<List<PressRelease>> getPrFromQuery(
+      {required String q, int page = 1, int itemsCount = 10}) async {
     apiService = ApiService();
     try {
       var response = await apiService!.get(
-        'getPressReleasesFromQuery?q=$q',
+        'getPressReleasesFromQuery?q=$q&page=$page&itemsCount=$itemsCount',
       );
       List<PressRelease> releases = response.data
           .map<PressRelease>((e) => PressRelease.fromJson(e))
