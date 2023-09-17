@@ -14,7 +14,7 @@ import '../models/press_releases_model.dart';
 
 class HomeCard extends StatelessWidget {
   final PressRelease pr;
-  
+
   const HomeCard({
     Key? key,
     required this.pr,
@@ -22,8 +22,6 @@ class HomeCard extends StatelessWidget {
 
   @override
   Widget build(context) {
-    Service service = Service();
-
     final provider = Provider.of<PrPovider>(context, listen: true);
     final size = MediaQuery.of(context).size;
     return SizedBox(
@@ -108,28 +106,35 @@ class HomeCard extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            pr.title ?? "",
-                            maxLines: 1,
-                            softWrap: true,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              fontSize: 20,
-                              fontFamily: "Inter",
-                              fontVariations: [
-                                FontVariation(
-                                  'wght',
-                                  700,
+                          Wrap(
+                            children: [
+                              Text(
+                                pr.title ?? "",
+                                maxLines: 1,
+                                softWrap: true,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  fontFamily: "Inter",
+                                  fontVariations: [
+                                    FontVariation(
+                                      'wght',
+                                      700,
+                                    ),
+                                  ],
+                                  color: Colors.white,
                                 ),
-                              ],
-                              color: Colors.white,
-                            ),
+                              ),
+                              Text(
+                                pr.ministry,
+                              )
+                            ],
                           ),
                           const SizedBox(
                             height: 4,
                           ),
                           Text(
-                            pr.description?.join(" ") ?? "",
+                            pr.description.join(" ") ?? "",
                             maxLines: 3,
                             softWrap: true,
                             overflow: TextOverflow.ellipsis,

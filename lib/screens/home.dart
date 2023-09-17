@@ -1,13 +1,11 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:insights/Providers/pr_provider.dart';
-import 'package:insights/components/custom_text_field_widget.dart';
 import 'package:insights/constants.dart';
-import 'package:insights/utils/preference_utlis.dart';
 import 'package:insights/widgets/home_card.dart';
 import 'package:insights/utils/loader.dart';
 import 'package:provider/provider.dart';
@@ -28,24 +26,75 @@ class _HomeState extends State<Home> {
   Service? apiService;
   Timer? _throttle;
 
+  static const _pageSize = 10;
+
+  final PagingController<int, PressRelease> _pagingController =
+      PagingController(firstPageKey: 0);
+
   @override
   void initState() {
+    // final provider = Provider.of<PrPovider>(context, listen: false);
+    _initListeners();
+
+    apiService = Service();
+    // provider.querySearchController.text.isNotEmpty
+    //     ? getPrFromQuery(provider.querySearchController.text)
+    //     : getReleases();
+
+    super.initState();
+  }
+
+  String? query;
+  Future<void> _initListeners() async {
     final provider = Provider.of<PrPovider>(context, listen: false);
+
     provider.querySearchController.addListener(() {
       if (_throttle?.isActive ?? false) return;
-      _throttle = Timer(const Duration(milliseconds: 500), () {
+      _throttle = Timer(const Duration(milliseconds: 500), () async {
         // Make your API call here
         final searchText = provider.querySearchController.text;
         // Call your API with searchText
-        getPrFromQuery(searchText);
+        // getPrFromQuery(searchText);
+        if (query == searchText) return;
+        query = searchText;
+        _pagingController.refresh();
+        final prs = await apiService!.getPrFromQuery(q: searchText);
+        if (prs.length < _pageSize) {
+          if (_pagingController.itemList != null) {
+            prs.removeWhere((e) => _pagingController.itemList!
+                .any((element) => element.prId == e.prId));
+          }
+          _pagingController.appendLastPage(prs);
+        } else {
+          _pagingController.appendPage(prs, 1);
+        }
+        provider.setAllPrs(_pagingController.itemList ?? []);
       });
     });
-    apiService = Service();
-    provider.querySearchController.text.isNotEmpty
-        ? getPrFromQuery(provider.querySearchController.text)
-        : getReleases();
 
-    super.initState();
+    _pagingController.addPageRequestListener((pageKey) {
+      _fetchPage(pageKey, provider.querySearchController.text);
+    });
+  }
+
+  Future<void> _fetchPage(int pageKey, String query) async {
+    try {
+      var newItems = await Service()
+          .getPrFromQuery(q: query, page: pageKey + 1, itemsCount: _pageSize);
+      final isLastPage = newItems.length < _pageSize;
+      if (_pagingController.itemList != null) {
+        newItems.removeWhere((e) => _pagingController.itemList!
+            .any((element) => element.prId == e.prId));
+      }
+      if (isLastPage) {
+        _pagingController.appendLastPage(newItems);
+      } else {
+        final nextPageKey = pageKey + 1;
+        _pagingController.appendPage(newItems, nextPageKey);
+      }
+    } catch (error) {
+      _pagingController.error = error;
+    }
   }
 
   Future<void> getReleases() async {
@@ -59,22 +108,25 @@ class _HomeState extends State<Home> {
     }
   }
 
-  Future<void> getPrFromQuery(String q) async {
-    try {
-      final provider = Provider.of<PrPovider>(context, listen: false);
-      List<PressRelease> pressReleasesModel =
-          await apiService!.getPrFromQuery(q);
-      provider.setAllPrs(pressReleasesModel);
-    } catch (e) {
-      print(e);
-    }
-  }
+  // Future<void> getPrFromQuery(String q) async {
+  //   try {
+  //     final provider = Provider.of<PrPovider>(context, listen: false);
+  //     List<PressRelease> pressReleasesModel =
+  //         await apiService!.getPrFromQuery(q);
+  //     provider.setAllPrs(pressReleasesModel);
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
 
   @override
   void dispose() {
     super.dispose();
     _throttle?.cancel();
+    _scrollController.dispose();
   }
+
+  final ScrollController _scrollController = ScrollController();
 
   bool isSearchOn = false;
   @override
@@ -119,15 +171,27 @@ class _HomeState extends State<Home> {
                                 FontVariation("wght", 600),
                               ],
                             ),
-                            onSubmitted: (value) {
-                              if (value.trim().isNotEmpty) {
-                                getPrFromQuery(value.trim());
-                              } else {
-                                getReleases();
-                              }
-                            },
+                            // onSubmitted: (value) {
+                            //   if (value.trim().isNotEmpty) {
+                            //     getPrFromQuery(value.trim());
+                            //   } else {
+                            //     getReleases();
+                            //   }
+                            // },
                             maxLines: 1,
                             decoration: InputDecoration(
+                              suffixIcon: provider
+                                      .querySearchController.text.isEmpty
+                                  ? null
+                                  : GestureDetector(
+                                      onTap: () {
+                                        provider.querySearchController.clear();
+                                      },
+                                      child: const Icon(
+                                        Icons.highlight_remove,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
                               isDense: true,
                               focusedBorder: OutlineInputBorder(
                                 borderSide: const BorderSide(
@@ -194,7 +258,7 @@ class _HomeState extends State<Home> {
         backgroundColor: const Color.fromRGBO(72, 105, 98, 1),
       ),
       body: provider.getAllPrs == null
-          ? const Loader()
+          ? const NewsLoader()
           : provider.getAllPrs!.isEmpty
               ? const SizedBox.expand(
                   child: Center(
@@ -213,19 +277,39 @@ class _HomeState extends State<Home> {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 20, vertical: 10),
-                        child: ListView.builder(
-                          clipBehavior: Clip.none,
-                          itemBuilder: (context, index) {
-                            if (index == provider.getAllPrs!.length) {
-                              return SizedBox(
-                                height: size.height * 0.1,
-                              );
-                            }
-                            return HomeCard(
-                              pr: provider.getAllPrs![index],
-                            );
-                          },
-                          itemCount: provider.getAllPrs!.length + 1,
+
+                        // child: ListView.builder(
+                        //   controller: _scrollController,
+                        //   clipBehavior: Clip.none,
+                        //   itemBuilder: (context, index) {
+                        //     if (index == provider.getAllPrs!.length) {
+                        //       return SizedBox(
+                        //         height: size.height * 0.1,
+                        //       );
+                        //     }
+                        //     return HomeCard(
+                        //       pr: provider.getAllPrs![index],
+                        //     );
+                        //   },
+                        //   itemCount: provider.getAllPrs!.length + 1,
+                        // ),
+                        child: Scrollbar(
+                          controller: _scrollController,
+                          child: PagedListView<int, PressRelease>(
+                            pagingController: _pagingController,
+                            scrollController: _scrollController,
+                            builderDelegate:
+                                PagedChildBuilderDelegate<PressRelease>(
+                              itemBuilder: (context, item, index) => HomeCard(
+                                pr: item,
+                              ),
+                              animateTransitions: true,
+                              firstPageProgressIndicatorBuilder: (context) =>
+                                  const NewsLoader(),
+                              // newPageProgressIndicatorBuilder: (context) =>
+                              //     const NewsLoader(),
+                            ),
+                          ),
                         ),
                       ),
                     ),

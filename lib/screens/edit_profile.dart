@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+
+import 'package:insights/auth.dart';
 import 'package:insights/constants.dart';
 
 Size displaySize(BuildContext context) {
@@ -20,7 +22,11 @@ double displayWidth(BuildContext context) {
 }
 
 class EditProfile extends StatefulWidget {
-  const EditProfile({super.key});
+  const EditProfile({
+    Key? key,
+    required this.dp,
+  }) : super(key: key);
+  final String dp;
 
   @override
   State<EditProfile> createState() {
@@ -29,6 +35,11 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
+  @override
+  initState() {
+    super.initState();
+  }
+
   @override
   Widget build(context) {
     bool passwordVisible = false;
