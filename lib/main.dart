@@ -44,15 +44,21 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> init() async {
-    final isLoggedIn = await Auth().isLoggedIn();
-    if (isLoggedIn) {
-      setState(() {
-        w = const BottomNav();
-      });
-    } else {
-      setState(() {
-        w = const LoginPage();
-      });
+    try {
+      final isLoggedIn = await Auth().isLoggedIn();
+      if (isLoggedIn) {
+        setState(() {
+          w = const BottomNav();
+        });
+      } else {
+        setState(() {
+          w = const LoginPage();
+        });
+      }
+    } catch (e) {
+      w = const LoginPage();
+      setState(() {});
+      print(e);
     }
   }
 

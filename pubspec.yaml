@@ -48,6 +48,7 @@ dependencies:
   flutter_multi_formatter: ^2.11.7
   video_player: ^2.7.1
   appinio_video_player: ^1.2.2
+  smooth_page_indicator: ^1.1.0
 
 dev_dependencies:
   flutter_test:

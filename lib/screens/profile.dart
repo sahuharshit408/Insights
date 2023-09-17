@@ -74,15 +74,15 @@ class Profile extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(
-                  height: 60,
-                ),
+                // const SizedBox(
+                //   height: 60,
+                // ),
               ],
             ),
             backgroundColor: const Color.fromRGBO(72, 105, 98, 1),
           ),
           body: SingleChildScrollView(
-              child: Column(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(
@@ -514,7 +514,7 @@ class Profile extends StatelessWidget {
           ),
         ),
         const Positioned(
-          top: 140,
+          top: 120,
           right: 0,
           left: 0,
           child: CircleAvatar(

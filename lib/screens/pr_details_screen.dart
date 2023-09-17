@@ -2,13 +2,13 @@
 import 'dart:ui';
 
 import 'package:appinio_video_player/appinio_video_player.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:insights/Providers/pr_provider.dart';
+import 'package:insights/constants.dart';
 import 'package:insights/screens/full_screen_image.dart';
-
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../models/press_releases_model.dart';
 
 class PrDetailsScreen extends StatefulWidget {
@@ -23,9 +23,16 @@ class PrDetailsScreen extends StatefulWidget {
 }
 
 class _PrDetailsScreenState extends State<PrDetailsScreen> {
+  List<String> imagesVideosList = [];
   @override
   void initState() {
     super.initState();
+    for (int i = 0; i < widget.pr.videoUrls.length; i++) {
+      imagesVideosList.add(widget.pr.videoUrls[i].url ?? "");
+    }
+    for (int i = 0; i < widget.pr.imageUrls.length; i++) {
+      imagesVideosList.add(widget.pr.imageUrls[i]);
+    }
   }
 
   @override
@@ -33,9 +40,12 @@ class _PrDetailsScreenState extends State<PrDetailsScreen> {
     super.dispose();
   }
 
+  int _currentPage = 0;
+
+  final CarouselController _carouselController = CarouselController();
+
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<PrPovider>(context, listen: true);
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -61,18 +71,25 @@ class _PrDetailsScreenState extends State<PrDetailsScreen> {
             delegate: SliverChildListDelegate(
               [
                 CarouselSlider(
+                  carouselController: _carouselController,
                   options: CarouselOptions(
-                      height: size.width * 0.7,
-                      viewportFraction: 1,
-                      enableInfiniteScroll: false,
-                      enlargeCenterPage: true,
-                      scrollDirection: Axis.horizontal,
-                      pageViewKey: const PageStorageKey("carousel")),
-                  items: provider.getPrDetails(widget.pr.prId).map((e) {
+                    height: size.width * 0.7,
+                    viewportFraction: 1,
+                    enableInfiniteScroll: false,
+                    enlargeCenterPage: true,
+                    scrollDirection: Axis.horizontal,
+                    pageViewKey: const PageStorageKey("carousel"),
+                    onPageChanged: (index, reason) {
+                      _currentPage = index;
+                      setState(() {});
+                    },
+                  ),
+
+                  items: imagesVideosList.map((e) {
                     return e.contains("mp4")
                         ? VideoWidget(videoUrl: e)
                         : Hero(
-                            tag: widget.pr.prId,
+                            tag: widget.pr.prId ?? "",
                             child: GestureDetector(
                               onTap: () {
                                 Navigator.of(context).push(PageRouteBuilder(
@@ -91,9 +108,9 @@ class _PrDetailsScreenState extends State<PrDetailsScreen> {
                                 child: Container(
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
-                                      image: Image.network(
+                                      image: CachedNetworkImageProvider(
                                         e,
-                                      ).image,
+                                      ),
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -118,11 +135,31 @@ class _PrDetailsScreenState extends State<PrDetailsScreen> {
                   //   ),
                   // ),
                 ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Center(
+                  child: AnimatedSmoothIndicator(
+                    activeIndex: _currentPage,
+                    count: imagesVideosList.length,
+                    onDotClicked: (index) {
+                      _carouselController.animateToPage(index);
+                      setState(() {});
+                    },
+                    effect: const WormEffect(
+                      dotColor: greyShade300,
+                      spacing: 4,
+                      dotHeight: 5,
+                      dotWidth: 20,
+                      activeDotColor: greyShade600,
+                    ),
+                  ),
+                ),
                 Padding(
                   padding: const EdgeInsets.only(
                       left: 20, right: 20, top: 20, bottom: 10),
                   child: Text(
-                    widget.pr.title,
+                    widget.pr.title ?? "",
                     style: const TextStyle(
                       fontSize: 22,
                       fontFamily: "Inter",
@@ -139,7 +176,7 @@ class _PrDetailsScreenState extends State<PrDetailsScreen> {
                   padding:
                       const EdgeInsets.only(left: 20, right: 20, bottom: 20),
                   child: Text(
-                    widget.pr.description.join("\n\n"),
+                    widget.pr.description.join("\n\n") ?? "",
                     style: const TextStyle(
                       fontSize: 18,
                       fontFamily: "Inter",
@@ -190,8 +227,10 @@ class _VideoWidgetState extends State<VideoWidget> {
     _customVideoPlayerWebSettings = CustomVideoPlayerWebSettings(
       src: widget.videoUrl,
     );
-    _videoPlayerController = VideoPlayerController.network(
-      widget.videoUrl,
+    _videoPlayerController = VideoPlayerController.networkUrl(
+      Uri.parse(
+        widget.videoUrl,
+      ),
     )..initialize().then((value) => setState(() {}));
     _customVideoPlayerController = CustomVideoPlayerController(
       context: context,
@@ -206,7 +245,7 @@ class _VideoWidgetState extends State<VideoWidget> {
 
   @override
   void dispose() {
-    _customVideoPlayerController.dispose();
+    _videoPlayerController.dispose();
     super.dispose();
   }
 
