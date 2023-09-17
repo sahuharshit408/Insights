@@ -53,7 +53,7 @@ class _HomeState extends State<Home> {
       final provider = Provider.of<PrPovider>(context, listen: false);
       List<PressRelease> pressReleasesModel =
           await apiService!.getPressReleases();
-      provider.setAllPrs(pressReleasesModel);
+      provider.setAllPrs(pressReleasesModel, saveToLocal: true);
     } catch (e) {
       print(e);
     }
@@ -120,8 +120,8 @@ class _HomeState extends State<Home> {
                               ],
                             ),
                             onSubmitted: (value) {
-                              if (value.isNotEmpty) {
-                                getPrFromQuery(value);
+                              if (value.trim().isNotEmpty) {
+                                getPrFromQuery(value.trim());
                               } else {
                                 getReleases();
                               }

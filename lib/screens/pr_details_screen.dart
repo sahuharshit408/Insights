@@ -27,11 +27,11 @@ class _PrDetailsScreenState extends State<PrDetailsScreen> {
   @override
   void initState() {
     super.initState();
-    for (int i = 0; i < widget.pr.videoUrls!.length; i++) {
-      imagesVideosList.add(widget.pr.videoUrls![i].url ?? "");
+    for (int i = 0; i < widget.pr.videoUrls.length; i++) {
+      imagesVideosList.add(widget.pr.videoUrls[i].url ?? "");
     }
-    for (int i = 0; i < widget.pr.imageUrls!.length; i++) {
-      imagesVideosList.add(widget.pr.imageUrls![i]);
+    for (int i = 0; i < widget.pr.imageUrls.length; i++) {
+      imagesVideosList.add(widget.pr.imageUrls[i]);
     }
   }
 
@@ -176,7 +176,7 @@ class _PrDetailsScreenState extends State<PrDetailsScreen> {
                   padding:
                       const EdgeInsets.only(left: 20, right: 20, bottom: 20),
                   child: Text(
-                    widget.pr.description?.join("\n\n") ?? "",
+                    widget.pr.description.join("\n\n") ?? "",
                     style: const TextStyle(
                       fontSize: 18,
                       fontFamily: "Inter",

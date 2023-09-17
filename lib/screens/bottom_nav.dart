@@ -38,19 +38,17 @@ class _BottomNavState extends State<BottomNav> {
     const Profile(),
   ];
 
-
   @override
   void initState() {
     super.initState();
-    getBookmarks();
+    getLocalPrAndBookmarks();
   }
 
-  Future<void> getBookmarks() async{
+  Future<void> getLocalPrAndBookmarks() async {
     final provider = Provider.of<PrPovider>(context, listen: false);
-    
-    provider.setUserBookmarks(await apiService.getUserBookmark());
 
-    print('AYUSH ${await apiService.getUserBookmark()} ');
+    provider.getPrsFromLocal();
+    provider.setUserBookmarks(await apiService.getUserBookmark());
   }
 
   @override
