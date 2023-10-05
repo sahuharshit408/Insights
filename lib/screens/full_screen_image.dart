@@ -34,7 +34,7 @@ class FullScreenImage extends StatelessWidget {
             ),
             const Spacer(flex: 3),
             Hero(
-              tag: pr.prId ?? "",
+              tag: pr.prId,
               child: CachedNetworkImage(
                 imageUrl: imageUrl,
                 width: double.infinity,
@@ -47,7 +47,7 @@ class FullScreenImage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Text(
-                pr.title ?? "",
+                pr.title,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(

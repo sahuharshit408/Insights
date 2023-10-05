@@ -4,7 +4,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import 'package:insights/auth.dart';
 import 'package:insights/constants.dart';
 
 Size displaySize(BuildContext context) {
@@ -41,9 +40,10 @@ class _EditProfileState extends State<EditProfile> {
     super.initState();
   }
 
+  bool passwordVisible = false;
+
   @override
   Widget build(context) {
-    bool passwordVisible = false;
     return Stack(
       children: [
         Scaffold(

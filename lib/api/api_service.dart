@@ -91,7 +91,7 @@ class ApiService {
         cancelToken: cancelToken ?? _cancelToken,
         options: options,
       ));
-    } on DioError {
+    } on DioException {
       rethrow;
     }
   }
@@ -119,7 +119,7 @@ class ApiService {
         cancelToken: cancelToken ?? _cancelToken,
         options: options,
       ));
-    } on DioError {
+    } on DioException {
       rethrow;
     }
   }
@@ -148,7 +148,7 @@ class ApiService {
         cancelToken: cancelToken ?? _cancelToken,
         options: options,
       ));
-    } on DioError {
+    } on DioException {
       rethrow;
     }
   }

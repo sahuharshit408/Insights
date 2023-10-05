@@ -2,8 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:insights/screens/bottom_nav.dart';
+import 'package:insights/service.dart';
 import 'package:insights/utils/preference_utlis.dart';
 import 'package:insights/utils/utils.dart';
+
+import 'models/user.dart' as UserModel;
 
 class Auth {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -69,6 +72,7 @@ class Auth {
         email: email,
         password: password,
       );
+      saveUserDetails(user);
       final token = await user.user!.getIdToken(true);
       setString("token", token!);
       Navigator.of(context).pushReplacement(
@@ -104,6 +108,16 @@ class Auth {
     }
   }
 
+  Future<void> saveUserDetails(UserCredential user) async {
+    await Service().saveUser(
+      UserModel.User(
+        email: user.user!.email!,
+        uuid: user.user!.uid,
+        fcmToken: getString("fcmToken"),
+      ),
+    );
+  }
+
   Future<void> signInWithGoogle({required BuildContext context}) async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
@@ -121,7 +135,11 @@ class Auth {
       // Once signed in, return the UserCredential
       final user = await FirebaseAuth.instance.signInWithCredential(credential);
       final token = await user.user!.getIdToken();
+
       setString("token", token!);
+
+      saveUserDetails(user);
+
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (context) => const BottomNav(),

@@ -1,9 +1,11 @@
 import 'package:insights/api/api_service.dart';
 import 'package:insights/auth.dart';
 import 'package:insights/models/press_releases_model.dart';
+import 'package:insights/models/user.dart';
 
 class Service {
   ApiService? apiService;
+  final uuid = Auth().getCurrentUserId();
   Future<List<PressRelease>> getPressReleases(
       {int? date, int page = 1, int itemsCount = 10}) async {
     apiService = ApiService();
@@ -64,12 +66,11 @@ class Service {
     }
   }
 
-  Future<void> addBookmarks(
-      {required String prId, required String userId}) async {
+  Future<void> addBookmarks({required String prId}) async {
     apiService = ApiService();
     try {
       var response = await apiService!.post(
-        'addPRToBookmark/$prId?userId=$userId',
+        'addPRToBookmark/$prId?uuid=$uuid',
       );
       print(response.data);
       return;
@@ -80,12 +81,11 @@ class Service {
     }
   }
 
-  Future<void> removeBookmarks(
-      {required String prId, required String userId}) async {
+  Future<void> removeBookmarks({required String prId}) async {
     apiService = ApiService();
     try {
       var response = await apiService!.get(
-        'removePRFromBookmark/$prId?userId=$userId',
+        'removePRFromBookmark/$prId?uuid=$uuid',
       );
       print(response.data);
       return;
@@ -100,9 +100,8 @@ class Service {
     apiService = ApiService();
     try {
       var response = await apiService!.get(
-        'getUserBookmarks?userId=${Auth().getCurrentUserId()}',
+        'getUserBookmarks?uuid=$uuid',
       );
-      print("AYUSH ${response.data}");
       List<PressRelease> releases = response.data
           .map<PressRelease>((e) => PressRelease.fromJson(e))
           .toList();
@@ -112,6 +111,22 @@ class Service {
     } catch (e) {
       print(e);
       return [];
+    }
+  }
+
+  Future<void> saveUser(User user) async {
+    apiService = ApiService();
+    try {
+      var response = await apiService!.post(
+        'saveUser',
+        data: user.toMap(),
+      );
+      print("SAVE USER RESPONSE " + response.data);
+      return;
+      // return details;
+    } catch (e) {
+      print(e);
+      return;
     }
   }
 }

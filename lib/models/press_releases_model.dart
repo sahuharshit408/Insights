@@ -6,7 +6,8 @@ class PressRelease {
     required this.title,
     required this.description,
     required this.imageUrls,
-    required this.videoUrls,
+    required this.audioUrls,
+    required this.videoUrl,
     required this.keyWords,
     required this.language,
     required this.status,
@@ -17,7 +18,8 @@ class PressRelease {
   late final String title;
   late final List<String> description;
   late final List<String> imageUrls;
-  late final List<VideoUrls> videoUrls;
+  late final List<AudioUrls> audioUrls;
+  late final String videoUrl;
   late final List<String> keyWords;
   late final String language;
   late final String status;
@@ -29,8 +31,9 @@ class PressRelease {
     title = json['title'];
     description = List.castFrom<dynamic, String>(json['description']);
     imageUrls = List.castFrom<dynamic, String>(json['imageUrls']);
-    videoUrls =
-        List.from(json['videoUrls']).map((e) => VideoUrls.fromJson(e)).toList();
+    audioUrls =
+        List.from(json['audioUrls']).map((e) => AudioUrls.fromJson(e)).toList();
+    videoUrl = json['videoUrl'];
     keyWords = List.castFrom<dynamic, String>(json['keyWords']);
     language = json['language'];
     status = json['status'];
@@ -44,7 +47,7 @@ class PressRelease {
     data['title'] = title;
     data['description'] = description;
     data['imageUrls'] = imageUrls;
-    data['videoUrls'] = videoUrls.map((e) => e.toJson()).toList();
+    data['audioUrls'] = audioUrls.map((e) => e.toJson()).toList();
     data['keyWords'] = keyWords;
     data['language'] = language;
     data['status'] = status;
@@ -52,15 +55,15 @@ class PressRelease {
   }
 }
 
-class VideoUrls {
-  VideoUrls({
+class AudioUrls {
+  AudioUrls({
     required this.language,
     required this.url,
   });
   late final String language;
   late final String url;
 
-  VideoUrls.fromJson(Map<String, dynamic> json) {
+  AudioUrls.fromJson(Map<String, dynamic> json) {
     try {
       language = json['language'];
       url = json['url'];

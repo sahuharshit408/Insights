@@ -34,7 +34,7 @@ class NewsLoader extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Lottie.asset("assets/lotties/news_loading.json",
+          Lottie.asset("assets/lotties/news.json",
               height: 150, width: 150, fit: BoxFit.cover),
           const Text(
             "Getting latest news...",
@@ -68,6 +68,48 @@ class BookmarksLoader extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class RocketLoader extends StatelessWidget {
+  const RocketLoader({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Lottie.asset("assets/lotties/rocket.json",
+              height: 150, width: 150, fit: BoxFit.cover),
+          const SizedBox(height: 20),
+          const Text(
+            "Coming Soon....",
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ComingSoon extends StatelessWidget {
+  const ComingSoon({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Lottie.asset("assets/lotties/coming_soon.json",
+              height: 150, width: 150, fit: BoxFit.cover),
         ],
       ),
     );

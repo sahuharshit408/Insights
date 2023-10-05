@@ -8,6 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:insights/constants.dart';
 import 'package:insights/screens/full_screen_image.dart';
+import 'package:intl/intl.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../models/press_releases_model.dart';
 
@@ -27,9 +28,7 @@ class _PrDetailsScreenState extends State<PrDetailsScreen> {
   @override
   void initState() {
     super.initState();
-    for (int i = 0; i < widget.pr.videoUrls.length; i++) {
-      imagesVideosList.add(widget.pr.videoUrls[i].url ?? "");
-    }
+    imagesVideosList.add(widget.pr.videoUrl);
     for (int i = 0; i < widget.pr.imageUrls.length; i++) {
       imagesVideosList.add(widget.pr.imageUrls[i]);
     }
@@ -89,7 +88,7 @@ class _PrDetailsScreenState extends State<PrDetailsScreen> {
                     return e.contains("mp4")
                         ? VideoWidget(videoUrl: e)
                         : Hero(
-                            tag: widget.pr.prId ?? "",
+                            tag: widget.pr.prId,
                             child: GestureDetector(
                               onTap: () {
                                 Navigator.of(context).push(PageRouteBuilder(
@@ -157,9 +156,9 @@ class _PrDetailsScreenState extends State<PrDetailsScreen> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(
-                      left: 20, right: 20, top: 20, bottom: 10),
+                      left: 20, right: 20, top: 20, bottom: 0),
                   child: Text(
-                    widget.pr.title ?? "",
+                    widget.pr.title,
                     style: const TextStyle(
                       fontSize: 22,
                       fontFamily: "Inter",
@@ -173,10 +172,47 @@ class _PrDetailsScreenState extends State<PrDetailsScreen> {
                   ),
                 ),
                 Padding(
+                  padding: const EdgeInsets.only(
+                      left: 20, right: 20, top: 5, bottom: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.pr.ministry,
+                        style: const TextStyle(
+                          fontFamily: "Raleway",
+                          fontVariations: [
+                            FontVariation(
+                              'wght',
+                              600,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Text(
+                        DateFormat.yMMMMd().format(
+                          DateTime.fromMillisecondsSinceEpoch(
+                            widget.pr.date.toInt(),
+                          ),
+                        ),
+                        style: const TextStyle(
+                          fontFamily: "Raleway",
+                          fontVariations: [
+                            FontVariation(
+                              'wght',
+                              300,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
                   padding:
                       const EdgeInsets.only(left: 20, right: 20, bottom: 20),
                   child: Text(
-                    widget.pr.description.join("\n\n") ?? "",
+                    widget.pr.description.join("\n\n"),
                     style: const TextStyle(
                       fontSize: 18,
                       fontFamily: "Inter",

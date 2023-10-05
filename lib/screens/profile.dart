@@ -1,8 +1,10 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+
 import 'package:insights/auth.dart';
 import 'package:insights/screens/Login.dart';
 import 'package:insights/screens/edit_profile.dart';
@@ -23,7 +25,12 @@ double displayWidth(BuildContext context) {
 }
 
 class Profile extends StatefulWidget {
-  const Profile({Key? key}) : super(key: key);
+  final Function(int index) changeSelectedScreenIndex;
+
+  const Profile({
+    Key? key,
+    required this.changeSelectedScreenIndex,
+  }) : super(key: key);
 
   @override
   State<Profile> createState() => _ProfileState();

@@ -7,6 +7,7 @@ import 'package:insights/Providers/pr_provider.dart';
 import 'package:insights/constants.dart';
 import 'package:insights/screens/bookmark.dart';
 import 'package:insights/screens/home.dart';
+import 'package:insights/screens/notification_screen.dart';
 import 'package:insights/screens/profile.dart';
 import 'package:insights/service.dart';
 import 'package:provider/provider.dart';
@@ -24,40 +25,51 @@ class _BottomNavState extends State<BottomNav> {
   Service apiService = Service();
   int selectedIndex = 0;
 
-  final List<Widget> _widgetOptions = <Widget>[
-    const Home(),
-    const Bookmark(),
-    const Center(
-      child: Text(
-        'Notifications',
-        style: TextStyle(
-          fontSize: 20,
-          fontVariations: [FontVariation("wght", 700)],
-        ),
-      ),
-    ),
-    const Profile(),
-  ];
+  void changeSelectedScreenIndex(int index) {
+    setState(() {
+      selectedIndex = index;
+    });
+  }
+
+  List<Widget> _widgetOptions = [];
 
   @override
   void initState() {
     super.initState();
+    _widgetOptions = <Widget>[
+      Home(changeSelectedScreenIndex: changeSelectedScreenIndex),
+      Bookmark(changeSelectedScreenIndex: changeSelectedScreenIndex),
+      NotificationScreen(changeSelectedScreenIndex: changeSelectedScreenIndex),
+      Profile(changeSelectedScreenIndex: changeSelectedScreenIndex),
+    ];
     getLocalPrAndBookmarks();
   }
 
   Future<void> getLocalPrAndBookmarks() async {
     final provider = Provider.of<PrPovider>(context, listen: false);
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      provider.getPrsFromLocal();
+      // provider.getPrsFromLocal();
       provider.setUserBookmarks(await apiService.getUserBookmark());
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<PrPovider>(context);
     return Scaffold(
       body: Center(
-        child: _widgetOptions.elementAt(selectedIndex),
+        child: AnimatedSwitcher(
+          transitionBuilder: (Widget child, Animation<double> animation) {
+            return FadeTransition(
+              opacity: animation,
+              child: child,
+            );
+          },
+          duration: const Duration(
+            milliseconds: 200,
+          ),
+          child: _widgetOptions.elementAt(selectedIndex),
+        ),
       ),
       backgroundColor: backgroundColor,
       bottomNavigationBar: Theme(
@@ -81,9 +93,32 @@ class _BottomNavState extends State<BottomNav> {
               ),
             ),
             BottomNavigationBarItem(
-              icon: SvgPicture.asset('assets/bookmark.svg'),
+              icon: Badge(
+                isLabelVisible: provider.bookmarks.isNotEmpty,
+                label: Text(provider.bookmarks.length.toString()),
+                textColor: Colors.black,
+                backgroundColor: Colors.white,
+                textStyle: const TextStyle(fontVariations: [
+                  FontVariation(
+                    'wght',
+                    700,
+                  ),
+                ]),
+                child: SvgPicture.asset('assets/bookmark.svg'),
+              ),
               label: "",
-              activeIcon: Image.asset('assets/bookmark_active.png'),
+              activeIcon: Badge(
+                  label: Text(provider.bookmarks.length.toString()),
+                  isLabelVisible: provider.bookmarks.isNotEmpty,
+                  textColor: Colors.white,
+                  backgroundColor: Colors.black,
+                  textStyle: const TextStyle(fontVariations: [
+                    FontVariation(
+                      'wght',
+                      700,
+                    ),
+                  ]),
+                  child: Image.asset('assets/bookmark_active.png')),
             ),
             BottomNavigationBarItem(
               icon: SvgPicture.asset('assets/notify.svg'),

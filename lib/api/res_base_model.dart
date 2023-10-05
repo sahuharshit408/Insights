@@ -8,18 +8,18 @@ class ResBaseModel {
   late final String message;
   late final bool status;
 
-  ResBaseModel.fromJson(Map<String, dynamic> json){
+  ResBaseModel.fromJson(Map<String, dynamic> json) {
     data = Data.fromJson(json['data']);
     message = json['message'];
     status = json['status'];
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['data'] = data.toJson();
-    _data['message'] = message;
-    _data['status'] = status;
-    return _data;
+    final d = <String, dynamic>{};
+    d['data'] = data.toJson();
+    d['message'] = message;
+    d['status'] = status;
+    return d;
   }
 }
 
@@ -29,13 +29,13 @@ class Data {
   });
   late final String userid;
 
-  Data.fromJson(Map<String, dynamic> json){
+  Data.fromJson(Map<String, dynamic> json) {
     userid = json['userid'];
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['userid'] = userid;
-    return _data;
+    final data = <String, dynamic>{};
+    data['userid'] = userid;
+    return data;
   }
 }

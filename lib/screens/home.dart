@@ -1,22 +1,27 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:insights/widgets/date_picker_text_field.dart';
+import 'package:provider/provider.dart';
+
 import 'package:insights/Providers/pr_provider.dart';
 import 'package:insights/constants.dart';
-import 'package:insights/widgets/home_card.dart';
 import 'package:insights/utils/loader.dart';
-import 'package:provider/provider.dart';
+import 'package:insights/widgets/home_card.dart';
 
 import '../models/press_releases_model.dart';
 import '../service.dart';
 
 class Home extends StatefulWidget {
+  final Function(int index) changeSelectedScreenIndex;
   const Home({
-    super.key,
-  });
+    Key? key,
+    required this.changeSelectedScreenIndex,
+  }) : super(key: key);
 
   @override
   State<Home> createState() => _HomeState();
@@ -75,6 +80,8 @@ class _HomeState extends State<Home> {
     _pagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey, provider.querySearchController.text);
     });
+
+    provider.querySearchController.text = " ";
   }
 
   Future<void> _fetchPage(int pageKey, String query) async {
@@ -124,10 +131,11 @@ class _HomeState extends State<Home> {
     super.dispose();
     _throttle?.cancel();
     _scrollController.dispose();
+    textFieldFocusNode.dispose();
   }
 
   final ScrollController _scrollController = ScrollController();
-
+  FocusNode textFieldFocusNode = FocusNode();
   bool isSearchOn = false;
   @override
   Widget build(BuildContext context) {
@@ -144,7 +152,163 @@ class _HomeState extends State<Home> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (ctx) =>
+                          StatefulBuilder(builder: (context, setDialogState) {
+                        return AlertDialog(
+                            title: const Text(
+                              "Filters",
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontVariations: [FontVariation("wght", 600)],
+                              ),
+                            ),
+                            content: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Row(
+                                  children: [
+                                    const Text(
+                                      "Ministry: ",
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontVariations: [
+                                          FontVariation("wght", 600)
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Expanded(
+                                      child: DropdownButton<String>(
+                                        isExpanded: true,
+                                        value: provider.selectedMinistry,
+                                        borderRadius: BorderRadius.circular(10),
+                                        icon: const Icon(Icons.arrow_drop_down),
+                                        iconSize: 24,
+                                        elevation: 16,
+                                        menuMaxHeight: 200,
+                                        style: const TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 14,
+                                            fontVariations: [
+                                              FontVariation("wght", 600)
+                                            ]),
+                                        underline: Container(
+                                          height: 2,
+                                          color: Colors.grey,
+                                        ),
+                                        onChanged: (String? newValue) {
+                                          provider.setSelectedMinistry(
+                                              newValue ?? "");
+                                          setDialogState(() {});
+                                        },
+                                        items: provider.ministries
+                                            .map<DropdownMenuItem<String>>(
+                                                (String value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Text(
+                                              value,
+                                              style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 14,
+                                                  fontVariations: [
+                                                    FontVariation("wght", 600)
+                                                  ]),
+                                            ),
+                                          );
+                                        }).toList(),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    const Text(
+                                      "Language: ",
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontVariations: [
+                                          FontVariation("wght", 600)
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Expanded(
+                                      child: DropdownButton<String>(
+                                        isExpanded: true,
+                                        value: provider.selectedLanguage,
+                                        borderRadius: BorderRadius.circular(10),
+                                        icon: const Icon(Icons.arrow_drop_down),
+                                        iconSize: 24,
+                                        elevation: 16,
+                                        menuMaxHeight: 200,
+                                        style: const TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 14,
+                                            fontVariations: [
+                                              FontVariation("wght", 600)
+                                            ]),
+                                        underline: Container(
+                                          height: 2,
+                                          color: Colors.grey,
+                                        ),
+                                        onChanged: (String? newValue) {
+                                          provider.setSelectedLanguage(
+                                              newValue ?? "");
+                                          setDialogState(() {});
+                                        },
+                                        items: provider.languages
+                                            .map<DropdownMenuItem<String>>(
+                                                (String value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Text(
+                                              value,
+                                              style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 14,
+                                                  fontVariations: [
+                                                    FontVariation("wght", 600)
+                                                  ]),
+                                            ),
+                                          );
+                                        }).toList(),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      "Date: ",
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontVariations: [
+                                          FontVariation("wght", 600)
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Expanded(
+                                      child: DatePickerTextField(),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ));
+                      }),
+                    );
+                  },
                   icon: SvgPicture.asset(
                     "assets/filter_icon.svg",
                     height: 28,
@@ -163,6 +327,7 @@ class _HomeState extends State<Home> {
                           height: 40,
                           width: size.width * 0.6,
                           child: TextField(
+                            focusNode: textFieldFocusNode,
                             controller: provider.querySearchController,
                             style: const TextStyle(
                               // fontSize: 12,
@@ -243,6 +408,9 @@ class _HomeState extends State<Home> {
                   onPressed: () {
                     setState(() {
                       isSearchOn = !isSearchOn;
+                      if (isSearchOn) {
+                        textFieldFocusNode.requestFocus();
+                      }
                     });
                   },
                   icon: Image.asset(
@@ -263,7 +431,7 @@ class _HomeState extends State<Home> {
               ? const SizedBox.expand(
                   child: Center(
                     child: Text(
-                      "Something went wrong!",
+                      "No Press Preleases Found!",
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -296,6 +464,7 @@ class _HomeState extends State<Home> {
                         child: Scrollbar(
                           controller: _scrollController,
                           child: PagedListView<int, PressRelease>(
+                            clipBehavior: Clip.none,
                             pagingController: _pagingController,
                             scrollController: _scrollController,
                             builderDelegate:

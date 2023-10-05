@@ -1,17 +1,21 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:insights/Providers/pr_provider.dart';
-import 'package:insights/constants.dart';
-import 'package:insights/models/press_releases_model.dart';
-import 'package:insights/screens/pr_details_screen.dart';
-import 'package:insights/service.dart';
-import 'package:insights/utils/loader.dart';
 import 'package:provider/provider.dart';
 
+import 'package:insights/Providers/pr_provider.dart';
+import 'package:insights/constants.dart';
+import 'package:insights/screens/pr_details_screen.dart';
+import 'package:insights/utils/loader.dart';
+
 class Bookmark extends StatefulWidget {
-  const Bookmark({Key? key}) : super(key: key);
+  final Function(int index) changeSelectedScreenIndex;
+  const Bookmark({
+    Key? key,
+    required this.changeSelectedScreenIndex,
+  }) : super(key: key);
 
   @override
   State<Bookmark> createState() => _BookmarkState();
@@ -29,6 +33,13 @@ class _BookmarkState extends State<Bookmark> {
       appBar: AppBar(
         centerTitle: true,
         elevation: 0,
+        leading: IconButton(
+          onPressed: () => widget.changeSelectedScreenIndex(0),
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
+          ),
+        ),
         title: const Text(
           'Bookmarks',
           style: TextStyle(
@@ -93,7 +104,7 @@ class _BookmarkState extends State<Bookmark> {
                                 child: Column(
                                   children: [
                                     Text(
-                                      card.title ?? "",
+                                      card.title,
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       style: const TextStyle(
@@ -108,7 +119,7 @@ class _BookmarkState extends State<Bookmark> {
                                       height: 8,
                                     ),
                                     Text(
-                                      card.description.join(" ") ?? "",
+                                      card.description.join(" "),
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 2,
                                       style: const TextStyle(

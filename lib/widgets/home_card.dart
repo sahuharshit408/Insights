@@ -5,10 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:insights/Providers/pr_provider.dart';
-import 'package:insights/api/api_service.dart';
-import 'package:insights/auth.dart';
 import 'package:insights/screens/pr_details_screen.dart';
-import 'package:insights/service.dart';
 import 'package:provider/provider.dart';
 import '../models/press_releases_model.dart';
 
@@ -109,7 +106,7 @@ class HomeCard extends StatelessWidget {
                           Wrap(
                             children: [
                               Text(
-                                pr.title ?? "",
+                                pr.title,
                                 maxLines: 1,
                                 softWrap: true,
                                 overflow: TextOverflow.ellipsis,
@@ -127,14 +124,24 @@ class HomeCard extends StatelessWidget {
                               ),
                               Text(
                                 pr.ministry,
+                                style: const TextStyle(
+                                  fontFamily: "Raleway",
+                                  fontVariations: [
+                                    FontVariation(
+                                      'wght',
+                                      300,
+                                    ),
+                                  ],
+                                  color: Colors.white,
+                                ),
                               )
                             ],
                           ),
                           const SizedBox(
-                            height: 4,
+                            height: 8,
                           ),
                           Text(
-                            pr.description.join(" ") ?? "",
+                            pr.description.join(" "),
                             maxLines: 3,
                             softWrap: true,
                             overflow: TextOverflow.ellipsis,
