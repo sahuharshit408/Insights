@@ -1,7 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:appinio_video_player/appinio_video_player.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/foundation.dart';
@@ -13,11 +15,12 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../models/press_releases_model.dart';
 
 class PrDetailsScreen extends StatefulWidget {
-  final PressRelease pr;
   const PrDetailsScreen({
     Key? key,
     required this.pr,
   }) : super(key: key);
+
+  final PressRelease pr;
 
   @override
   State<PrDetailsScreen> createState() => _PrDetailsScreenState();
@@ -25,23 +28,82 @@ class PrDetailsScreen extends StatefulWidget {
 
 class _PrDetailsScreenState extends State<PrDetailsScreen> {
   List<String> imagesVideosList = [];
+  late var selectedAudio;
+
+  final CarouselController _carouselController = CarouselController();
+  int _currentPage = 0;
+  late VideoPlayerController _videoPlayerController;
+
+  @override
+  void dispose() {
+    for (int i = 0; i < widget.pr.audioUrls.length; i++) {
+      audioPlayerMap[widget.pr.audioUrls[i].language]!.dispose();
+    }
+    _videoPlayerController.dispose();
+    super.dispose();
+  }
+
   @override
   void initState() {
+    _videoPlayerController = VideoPlayerController.networkUrl(
+        Uri.parse(
+          widget.pr.videoUrl,
+        ),
+        videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true))
+      ..initialize().then((value) => setState(() {}));
+    selectedAudio = widget.pr.audioUrls[0];
     super.initState();
+    initializeAudio();
     imagesVideosList.add(widget.pr.videoUrl);
     for (int i = 0; i < widget.pr.imageUrls.length; i++) {
       imagesVideosList.add(widget.pr.imageUrls[i]);
     }
   }
 
-  @override
-  void dispose() {
-    super.dispose();
+  void playAudio(VideoPlayerValue value) async {
+    bool play = value.isPlaying;
+    if (play) {
+      audioPlayerMap[selectedAudio.language]!.play(
+        UrlSource(selectedAudio.url),
+      );
+    } else {
+      audioPlayerMap[selectedAudio.language]!.pause();
+    }
+    final position =
+        await audioPlayerMap[selectedAudio.language]!.getCurrentPosition();
+
+    try {
+      audioPlayerMap[selectedAudio.language]!
+          .seek(Duration(seconds: value.position.inSeconds));
+    } catch (e) {
+      print(e);
+    }
+    print(
+        "VIDEO PLAYER POSITION: ${value.position} AUDIO PLAYER POSITION: $position");
   }
 
-  int _currentPage = 0;
+  Map<String, AudioPlayer> audioPlayerMap = {};
+  void initializeAudio() async {
+    for (int i = 0; i < widget.pr.audioUrls.length; i++) {
+      final tempAudioPlayer = AudioPlayer();
+      await tempAudioPlayer.setSourceUrl(widget.pr.audioUrls[i].url);
+      await tempAudioPlayer.setVolume(1.0);
+      audioPlayerMap[widget.pr.audioUrls[i].language] = tempAudioPlayer;
+    }
+  }
 
-  final CarouselController _carouselController = CarouselController();
+  void changeAudio(value, prev) async {
+    print("PREV: $prev VALUE: $value");
+    _videoPlayerController.pause();
+    audioPlayerMap[prev]!.pause();
+
+    final selectedAudioTemp = widget.pr.audioUrls
+        .firstWhere((element) => element.language == value.toString());
+    audioPlayerMap[value]!.play(UrlSource(selectedAudioTemp.url));
+    audioPlayerMap[value]!.seek((await _videoPlayerController.position)!);
+    _videoPlayerController.play();
+    print("AUDIO SOURCE ${audioPlayerMap[selectedAudio.language]!.source}");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +148,88 @@ class _PrDetailsScreenState extends State<PrDetailsScreen> {
 
                   items: imagesVideosList.map((e) {
                     return e.contains("mp4")
-                        ? VideoWidget(videoUrl: e)
+                        ? Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Expanded(
+                                child: VideoWidget(
+                                  videoUrl: e,
+                                  onPlay: (videoPlayerValue) {
+                                    playAudio(videoPlayerValue);
+                                  },
+                                  videoController: _videoPlayerController,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 40,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20.0),
+                                  child: Row(
+                                    children: [
+                                      const Text(
+                                        "Change Audio Language: ",
+                                        style: TextStyle(
+                                          fontFamily: "Inter",
+                                          fontVariations: [
+                                            FontVariation(
+                                              'wght',
+                                              500,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      DropdownButton(
+                                        items: widget.pr.audioUrls
+                                            .map(
+                                              (e) => DropdownMenuItem(
+                                                value: e.language,
+                                                child: Text(
+                                                  "${languageCodeToLanguageNames[e.language]} (${e.language})",
+                                                  style: const TextStyle(
+                                                    fontFamily: "Inter",
+                                                    fontSize: 14,
+                                                    fontVariations: [
+                                                      FontVariation(
+                                                        'wght',
+                                                        200,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            )
+                                            .toList(),
+                                        onChanged: (value) {
+                                          changeAudio(
+                                              value, selectedAudio.language);
+                                          selectedAudio = widget.pr.audioUrls
+                                              .firstWhere((element) =>
+                                                  element.language ==
+                                                  value.toString());
+                                          setState(() {});
+                                        },
+                                        hint: Text(
+                                          languageCodeToLanguageNames[
+                                              selectedAudio.language]!,
+                                          style:
+                                              const TextStyle(fontVariations: [
+                                            FontVariation(
+                                              'wght',
+                                              500,
+                                            ),
+                                          ]),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )
+                            ],
+                          )
                         : Hero(
                             tag: widget.pr.prId,
                             child: GestureDetector(
@@ -239,23 +382,45 @@ class VideoWidget extends StatefulWidget {
   const VideoWidget({
     Key? key,
     required this.videoUrl,
+    required this.videoController,
+    this.onPlay,
   }) : super(key: key);
 
+  final Function(VideoPlayerValue isPlaying)? onPlay;
+  final VideoPlayerController videoController;
   final String videoUrl;
 
   @override
   State<VideoWidget> createState() => _VideoWidgetState();
 }
 
+bool isPlaying = false;
+
 class _VideoWidgetState extends State<VideoWidget> {
-  late VideoPlayerController _videoPlayerController;
   late CustomVideoPlayerController _customVideoPlayerController;
-  late CustomVideoPlayerWebController _customVideoPlayerWebController;
-
   final CustomVideoPlayerSettings _customVideoPlayerSettings =
-      const CustomVideoPlayerSettings(showSeekButtons: true);
+      const CustomVideoPlayerSettings(
+    showSeekButtons: true,
+    placeholderWidget: Column(
+      children: [
+        SizedBox(
+          height: 100,
+        ),
+        Center(
+          child: CircularProgressIndicator(),
+        ),
+      ],
+    ),
+  );
 
+  late CustomVideoPlayerWebController _customVideoPlayerWebController;
   late CustomVideoPlayerWebSettings _customVideoPlayerWebSettings;
+  late VideoPlayerController _videoPlayerController;
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -263,11 +428,8 @@ class _VideoWidgetState extends State<VideoWidget> {
     _customVideoPlayerWebSettings = CustomVideoPlayerWebSettings(
       src: widget.videoUrl,
     );
-    _videoPlayerController = VideoPlayerController.networkUrl(
-      Uri.parse(
-        widget.videoUrl,
-      ),
-    )..initialize().then((value) => setState(() {}));
+    _videoPlayerController = widget.videoController;
+
     _customVideoPlayerController = CustomVideoPlayerController(
       context: context,
       videoPlayerController: _videoPlayerController,
@@ -277,31 +439,38 @@ class _VideoWidgetState extends State<VideoWidget> {
     _customVideoPlayerWebController = CustomVideoPlayerWebController(
       webVideoPlayerSettings: _customVideoPlayerWebSettings,
     );
-  }
-
-  @override
-  void dispose() {
-    _videoPlayerController.dispose();
-    super.dispose();
+    _videoPlayerController.setVolume(0.0);
+    _videoPlayerController.addListener(() {
+      if (_videoPlayerController.value.isPlaying) {
+        // Video is playing
+        if (!isPlaying) {
+          setState(() {
+            isPlaying = true;
+          });
+          if (widget.onPlay != null) {
+            widget.onPlay!(_videoPlayerController.value);
+          }
+          print(isPlaying);
+        }
+      } else {
+        // Video is paused
+        if (isPlaying) {
+          setState(() {
+            isPlaying = false;
+          });
+          if (widget.onPlay != null) {
+            widget.onPlay!(_videoPlayerController.value);
+          }
+          print(isPlaying);
+        }
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: ListView(
-        children: [
-          kIsWeb
-              ? Expanded(
-                  child: CustomVideoPlayerWeb(
-                    customVideoPlayerWebController:
-                        _customVideoPlayerWebController,
-                  ),
-                )
-              : CustomVideoPlayer(
-                  customVideoPlayerController: _customVideoPlayerController,
-                ),
-        ],
-      ),
+    return CustomVideoPlayer(
+      customVideoPlayerController: _customVideoPlayerController,
     );
   }
 }

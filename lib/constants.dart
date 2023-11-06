@@ -100,3 +100,18 @@ const List<String> ministriesList = [
   'IFSC Authority',
   'National Security Council Secretariat'
 ];
+
+const languageCodeToLanguageNames = {
+  "en": "English",
+  "hi": "Hindi",
+  "bn": "Bengali",
+  "gu": "Gujarati",
+  "kn": "Kannada",
+  "ml": "Malayalam",
+  "mr": "Marathi",
+  "or": "Odia",
+  "pa": "Punjabi",
+  "ta": "Tamil",
+  "te": "Telugu",
+  "ur": "Urdu",
+};
